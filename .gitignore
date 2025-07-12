@@ -7,6 +7,9 @@
 .buildlog/
 .history
 
+# Secrets
+/wequil-twitter-clone/.env*
+
 
 
 # Flutter repo-specific
