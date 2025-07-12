@@ -50,7 +50,7 @@ unlinked.ds
 unlinked_spec.ds
 
 # Web related
-/wequil-twitter-clone/node-modules
+/wequil-twitter-clone/node_modules
 
 # Android related
 **/android/**/gradle-wrapper.jar
