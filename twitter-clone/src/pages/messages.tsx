@@ -513,9 +513,9 @@ export default function Messages(): JSX.Element {
   } else {
     // Desktop version remains the same
     return (
-      <div className='flex h-screen w-full'>
+      <div className='flex'>
         {/* Left: Conversations List */}
-        <MainContainer className='flex min-h-screen w-full max-w-sm flex-col border-r border-light-border dark:border-dark-border'>
+        <MainContainer className='flex min-h-screen flex-col border-r border-light-border dark:border-dark-border'>
           <MainHeader useActionButton title='Messages' action={back}>
             <Button
               className='dark-bg-tab group relative ml-auto p-2 hover:bg-light-primary/10 
