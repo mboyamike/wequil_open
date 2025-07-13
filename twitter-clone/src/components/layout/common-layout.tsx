@@ -53,6 +53,9 @@ export function PeopleLayout({ children }: LayoutProps): JSX.Element {
   return (
     <>
       {children}
+      <Aside>
+        <Suggestions />
+      </Aside>
     </>
   );
 }
@@ -61,9 +64,6 @@ export function MessagesLayout({ children }: LayoutProps): JSX.Element {
   return (
     <>
       {children}
-      {/* <Aside>
-        <Suggestions />
-      </Aside> */}
     </>
   );
 }

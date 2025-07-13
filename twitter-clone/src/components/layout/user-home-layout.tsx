@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { useAuth } from '@lib/context/auth-context';
 import { useUser } from '@lib/context/user-context';
@@ -25,6 +25,13 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
     query: { id }
   } = useRouter();
 
+  const handleMessageClick = () => {
+    if (userData?.id) {
+      router.push(`/messages?user=${userData.id}`);
+    }
+  };
+
+
   const coverData = userData?.coverPhotoURL
     ? { src: userData.coverPhotoURL, alt: userData.name }
     : null;
@@ -36,6 +43,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
   const { id: userId } = user ?? {};
 
   const isOwner = userData?.id === userId;
+  
 
   return (
     <>
@@ -75,9 +83,10 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
                   <div className='flex gap-2 self-start'>
                     <UserShare username={userData.username} />
                     <Button
-                      className='dark-bg-tab group relative cursor-not-allowed border border-light-line-reply p-2
+                      className='dark-bg-tab group relative border border-light-line-reply p-2
                                  hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary 
                                  dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
+                      onClick={handleMessageClick}
                     >
                       <HeroIcon className='h-5 w-5' iconName='EnvelopeIcon' />
                       <ToolTip tip='Message' />

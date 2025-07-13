@@ -1,4 +1,4 @@
-import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
+import type { Timestamp, FirestoreDataConverter, FieldValue } from 'firebase/firestore';
 import { Stats } from 'fs';
 
 export type Conversation = {
@@ -11,8 +11,8 @@ export type Conversation = {
     createdAt: string; // ISO string or timestamp
     readBy: string[]; // user IDs who have read
   };
-  createdAt: string; // ISO string or timestamp
-  updatedAt: string;
+  createdAt: FieldValue; // ISO string or timestamp
+  updatedAt: FieldValue;
 };
 
 export const conversationConverter: FirestoreDataConverter<Conversation> = {
