@@ -18,6 +18,11 @@ export function UserAvatar({
   className
 }: UserAvatarProps): JSX.Element {
   const pictureSize = size ?? 48;
+  
+  // Use wsrv for remote images
+  const optimizedSrc = src.startsWith('http') 
+    ? `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=${pictureSize}&h=${pictureSize}&fit=cover&output=webp`
+    : src;
 
   return (
     <Link href={username ? `/user/${username}` : '#'}>
@@ -34,7 +39,7 @@ export function UserAvatar({
           imgClassName='rounded-full'
           width={pictureSize}
           height={pictureSize}
-          src={src}
+          src={optimizedSrc}
           alt={alt}
           key={src}
         />

@@ -119,6 +119,7 @@ export function ImagePreview({
 
           return (
             <motion.button
+              key={id}
               type='button'
               className={cn(
                 'accent-tab group relative transition-shadow',
@@ -134,7 +135,7 @@ export function ImagePreview({
               {...variants}
               onClick={preventBubbling(handleSelectedImage(index, isVideo))}
               layout={!isTweet ? true : false}
-              key={id}
+              
             >
               {isVideo ? (
                 <>
