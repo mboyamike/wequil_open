@@ -3,6 +3,7 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+import { getMessaging } from 'firebase/messaging'
 import { isUsingEmulator } from '@lib/env';
 import { getFirebaseConfig } from './config';
 import type { Auth } from 'firebase/auth';
@@ -10,12 +11,14 @@ import type { Functions } from 'firebase/functions';
 import type { Firestore } from 'firebase/firestore';
 import type { FirebaseApp } from 'firebase/app';
 import type { FirebaseStorage } from 'firebase/storage';
+import type { Messaging } from 'firebase/messaging';
 
 type Firebase = {
   auth: Auth;
   storage: FirebaseStorage;
   firestore: Firestore;
   functions: Functions;
+  messaging?: Messaging;
   firebaseApp: FirebaseApp;
 };
 
@@ -26,8 +29,9 @@ function initialize(): Firebase {
   const storage = getStorage(firebaseApp);
   const firestore = getFirestore(firebaseApp);
   const functions = getFunctions(firebaseApp);
+  const messaging = getMessaging(firebaseApp);
 
-  return { firebaseApp, auth, firestore, storage, functions };
+  return { firebaseApp, auth, firestore, storage, functions, messaging };
 }
 
 function connectToEmulator({
