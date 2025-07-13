@@ -25,13 +25,13 @@ const navLinks: Readonly<NavLink[]> = [
     linkName: 'Home',
     iconName: 'HomeIcon'
   },
-  {
-    href: '/explore',
-    linkName: 'Explore',
-    iconName: 'HashtagIcon',
-    disabled: true,
-    canBeHidden: true
-  },
+  // {
+  //   href: '/explore',
+  //   linkName: 'Explore',
+  //   iconName: 'HashtagIcon',
+  //   disabled: true,
+  //   canBeHidden: true
+  // },
   {
     href: '/notifications',
     linkName: 'Notifications',
@@ -42,7 +42,7 @@ const navLinks: Readonly<NavLink[]> = [
     href: '/messages',
     linkName: 'Messages',
     iconName: 'EnvelopeIcon',
-    disabled: true
+    disabled: false
   },
   {
     href: '/bookmarks',
@@ -50,13 +50,13 @@ const navLinks: Readonly<NavLink[]> = [
     iconName: 'BookmarkIcon',
     canBeHidden: true
   },
-  {
-    href: '/lists',
-    linkName: 'Lists',
-    iconName: 'Bars3BottomLeftIcon',
-    disabled: true,
-    canBeHidden: true
-  }
+  // {
+  //   href: '/lists',
+  //   linkName: 'Lists',
+  //   iconName: 'Bars3BottomLeftIcon',
+  //   disabled: true,
+  //   canBeHidden: true
+  // }
 ];
 
 export function Sidebar(): JSX.Element {
