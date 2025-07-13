@@ -22,7 +22,7 @@ import {
   tweetsCollection,
   userStatsCollection,
   userBookmarksCollection,
-  useMessagesCollection,
+  messagesCollection,
   conversationCollection
 } from './collections';
 import type { WithFieldValue, Query } from 'firebase/firestore';
@@ -30,7 +30,7 @@ import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
 import type { Theme, Accent } from '@lib/types/theme';
-import { Message } from '@lib/types/message';
+import { Message, MessageInput } from '@lib/types/message';
 import { Conversation } from '@lib/types/conversation';
 
 export async function checkUsernameAvailability(
@@ -290,12 +290,12 @@ export async function clearAllBookmarks(userId: string): Promise<void> {
 
 export async function createMessage(
   conversationId: string,
-  data: Message,
+  data: MessageInput,
   userId: string,
   participants: string[],
 ): Promise<void> {
   const conversationRef = doc(conversationCollection, conversationId);
-  const messageRef = doc(useMessagesCollection(conversationId), data.id);
+  const messageRef = doc(messagesCollection(conversationId), data.id);
 
   try {
     // Check if conversation exists

@@ -1,4 +1,4 @@
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getMessaging, getToken, MessagePayload, onMessage, Unsubscribe } from 'firebase/messaging';
 import { getFirebase } from './app';
 
 const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;
@@ -17,12 +17,12 @@ export class FirebaseMessagingService {
       // Request permission
       const permission = await Notification.requestPermission();
       
-      if (permission !== 'granted') {
+      if (permission !== 'granted' || (typeof this.messaging) == 'undefined') {
         console.log('Notification permission denied');
         return null;
       }
 
-      const token = await getToken(this.messaging, {
+      const token = await getToken(this.messaging!, {
         vapidKey: VAPID_KEY
       });
 
@@ -34,12 +34,19 @@ export class FirebaseMessagingService {
     }
   }
 
-  onMessage(callback: (payload: any) => void) {
+  onMessage(callback: (payload: MessagePayload) => void) : Unsubscribe | null {
+    if (typeof this.messaging === 'undefined') {
+      return null;
+    }
+
     return onMessage(this.messaging, callback);
   }
 
   async getCurrentToken(): Promise<string | null> {
     try {
+      if (typeof this.messaging === 'undefined') {
+        return null;
+      }
       return await getToken(this.messaging, {
         vapidKey: VAPID_KEY
       });

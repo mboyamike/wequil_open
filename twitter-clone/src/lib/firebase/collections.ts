@@ -34,7 +34,7 @@ export function userStatsCollection(id: string): CollectionReference<Stats> {
   return collection(db, `users/${id}/stats`).withConverter(statsConverter);
 }
 
-export function useMessagesCollection(id: string): CollectionReference<Message> {
+export function messagesCollection(id: string): CollectionReference<Message> {
   return collection(db, `conversations/${id}/messages`).withConverter(messagesConverter);
 }
 

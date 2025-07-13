@@ -9,6 +9,8 @@ export type Message = {
   readBy: string[]; 
 };
 
+export type MessageInput = Omit<Message, 'createdAt'>;
+
 export const messagesConverter: FirestoreDataConverter<Message> = {
   toFirestore(message) {
     return { ...message };

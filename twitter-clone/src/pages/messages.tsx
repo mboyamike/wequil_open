@@ -6,12 +6,15 @@ import {
   query,
   where,
   orderBy,
-  getDocs
+  getDocs,
+  Timestamp,
+  type FieldValue,
+  Firestore
 } from 'firebase/firestore';
 import {
   usersCollection,
   conversationCollection,
-  useMessagesCollection
+  messagesCollection
 } from '@lib/firebase/collections';
 import { useAuth } from '@lib/context/auth-context';
 import { useCollection } from '@lib/hooks/useCollection';
@@ -29,12 +32,14 @@ import type { ReactElement, ReactNode } from 'react';
 import { Conversation } from '@lib/types/conversation';
 import { User } from '@lib/types/user';
 import { createMessage } from '@lib/firebase/utils';
-import type { Message } from '@lib/types/message';
+import type { Message, MessageInput } from '@lib/types/message';
 import { Loading } from '@components/ui/loading';
 import Link from 'next/link';
 import { Modal } from '@components/modal/modal';
 import { useModal } from '@lib/hooks/useModal';
 import { useWindow } from '@lib/context/window-context';
+
+
 
 export default function Messages(): JSX.Element {
   const { back, query: routerQuery } = useRouter();
@@ -47,6 +52,8 @@ export default function Messages(): JSX.Element {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [userSearch, setUserSearch] = useState('');
   const { isMobile } = useWindow();
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [messagesLoading, setMessagesLoading] = useState(false);
 
   const { open, openModal, closeModal } = useModal();
 
@@ -103,7 +110,7 @@ export default function Messages(): JSX.Element {
     Promise.all(
       uncachedUserIds.map((id) =>
         getDoc(doc(usersCollection, id)).then((snap) =>
-          snap.exists() ? { id, data: snap.data() as User } : null
+          snap.exists() ? { id, data: snap.data() } : null
         )
       )
     ).then((results) => {
@@ -112,6 +119,8 @@ export default function Messages(): JSX.Element {
         if (res) newCache[res.id] = res.data;
       });
       setUserCache((prev) => ({ ...prev, ...newCache }));
+    }).catch(e => {
+      console.error(`Error: ${JSON.stringify(e)}`);
     });
   }, [conversations, user!.id, userCache]);
 
@@ -135,6 +144,33 @@ export default function Messages(): JSX.Element {
     });
   }, [user?.id]);
 
+  const conversationId = (targetUser && user)
+    ? [user.id, targetUser.id].sort().join('_')
+    : null;
+
+  useEffect(() => {
+    if (!conversationId) {
+      setMessages([]);
+      return;
+    }
+    setMessagesLoading(true);
+    const q = query(
+      messagesCollection(conversationId),
+      orderBy('createdAt', 'asc')
+    );
+    getDocs(q)
+      .then((snapshot) => {
+        setMessages(snapshot.docs.map((doc) => doc.data()));
+      })
+      .finally(() => setMessagesLoading(false));
+  }, [conversationId]);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, targetUser]);
+
   if (!user?.id) {
     return <div>Loading user...</div>;
   }
@@ -150,24 +186,23 @@ export default function Messages(): JSX.Element {
       const conversationId = [user.id, targetUser.id].sort().join('_');
       const participants = [user.id, targetUser.id];
 
-      // Create the message data
-      const messageData: Message = {
+      // Create the message data without createdAt
+      const messageData: MessageInput = {
         id: messageId,
         conversationId,
         senderId: user.id,
         text: message.trim(),
-        createdAt: undefined as any, // Will be set in createMessage
         readBy: [user.id]
       };
 
       // Add the message to local state immediately for instant feedback
       const newMessage: Message = {
         ...messageData,
-        createdAt: new Date().toISOString() as any, // Temporary timestamp
+        createdAt: Timestamp.now()
       };
+
       setMessages(prev => [...prev, newMessage]);
 
-      // Clear the input immediately
       setMessage('');
 
       // Send the message to Firestore
@@ -205,41 +240,14 @@ export default function Messages(): JSX.Element {
     return date.toLocaleDateString('en-GB'); // e.g., 10/07/24
   }
 
-  function getMessageDateString(createdAt: any) {
+  function getMessageDateString(createdAt: FieldValue | null | undefined): string {
     if (!createdAt) return '';
     if (typeof createdAt === 'string') return createdAt;
-    if (createdAt.toDate) return createdAt.toDate().toISOString();
+    if (createdAt && typeof createdAt === 'object' && 'toDate' in createdAt) {
+      return (createdAt as Timestamp).toDate().toISOString();
+    }
     return '';
   }
-
-  const conversationId = targetUser
-    ? [user.id, targetUser.id].sort().join('_')
-    : null;
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [messagesLoading, setMessagesLoading] = useState(false);
-
-  useEffect(() => {
-    if (!conversationId) {
-      setMessages([]);
-      return;
-    }
-    setMessagesLoading(true);
-    const q = query(
-      useMessagesCollection(conversationId),
-      orderBy('createdAt', 'asc')
-    );
-    getDocs(q)
-      .then((snapshot) => {
-        setMessages(snapshot.docs.map((doc) => doc.data() as Message));
-      })
-      .finally(() => setMessagesLoading(false));
-  }, [conversationId]);
-
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, targetUser]);
 
   const handleUserSelect = async (selectedUser: User) => {
     if (!user?.id) return;
@@ -258,12 +266,11 @@ export default function Messages(): JSX.Element {
         const messageId = crypto.randomUUID();
         const participants = [user.id, selectedUser.id];
 
-        const messageData: Message = {
+        const messageData: MessageInput = {
           id: messageId,
           conversationId,
           senderId: user.id,
           text: '', // Empty initial message
-          createdAt: undefined as any, // Will be set in createMessage
           readBy: [user.id]
         };
 
@@ -389,11 +396,10 @@ export default function Messages(): JSX.Element {
                           )}
                         </div>
                         <div
-                          className={`text-sm truncate ${
-                            isUnseen
-                              ? 'font-bold text-white'
-                              : 'text-light-secondary dark:text-dark-secondary'
-                          }`}
+                          className={`text-sm truncate ${isUnseen
+                            ? 'font-bold text-white'
+                            : 'text-light-secondary dark:text-dark-secondary'
+                            }`}
                         >
                           {lastMsg?.text || 'No messages yet'}
                         </div>
@@ -417,8 +423,8 @@ export default function Messages(): JSX.Element {
             <Button
               className='dark-bg-tab group relative p-2 hover:bg-light-primary/10 active:bg-light-primary/20 
                          dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
-              onClick={() => {
-                router.push('/messages', undefined, { shallow: true });
+              onClick={async () => {
+                await router.push('/messages', undefined, { shallow: true });
               }}
             >
               <HeroIcon className='h-5 w-5' iconName='ArrowLeftIcon' />
@@ -454,16 +460,15 @@ export default function Messages(): JSX.Element {
                         <div className={`max-w-[70%] rounded-2xl px-4 py-3 ${isMine
                           ? 'bg-main-accent text-white rounded-br-md'
                           : 'bg-light-secondary/10 dark:bg-dark-secondary/20 text-white dark:text-white rounded-bl-md'
-                        }`}
+                          }`}
                         >
                           <div className="whitespace-pre-line break-words">{msg.text}</div>
                         </div>
                         <div
-                          className={`text-xs mt-1 ${
-                            isMine
-                              ? 'text-right text-light-secondary dark:text-dark-secondary pr-2'
-                              : 'text-left text-light-secondary dark:text-dark-secondary pl-2'
-                          }`}
+                          className={`text-xs mt-1 ${isMine
+                            ? 'text-right text-light-secondary dark:text-dark-secondary pr-2'
+                            : 'text-left text-light-secondary dark:text-dark-secondary pl-2'
+                            }`}
                           style={{ maxWidth: '70%' }}
                         >
                           {formatMessageDate(getMessageDateString(msg.createdAt))}
@@ -574,13 +579,12 @@ export default function Messages(): JSX.Element {
                     <li
                       key={conv.id}
                       className={`flex cursor-pointer items-center gap-3 p-4 transition
-                      ${
-                        isSelected
+                      ${isSelected
                           ? 'border-r-2 border-main-accent bg-light-secondary/10 dark:bg-dark-secondary/20'
                           : 'border-r-2 border-transparent'
-                      }`}
-                      onClick={() => {
-                        router.push(
+                        }`}
+                      onClick={async () => {
+                        await router.push(
                           {
                             pathname: '/messages',
                             query: { user: otherUserId }
@@ -622,11 +626,10 @@ export default function Messages(): JSX.Element {
                           )}
                         </div>
                         <div
-                          className={`truncate text-sm ${
-                            isUnseen
-                              ? 'font-bold text-white'
-                              : 'text-light-secondary dark:text-dark-secondary'
-                          }`}
+                          className={`truncate text-sm ${isUnseen
+                            ? 'font-bold text-white'
+                            : 'text-light-secondary dark:text-dark-secondary'
+                            }`}
                         >
                           {lastMsg?.text || 'No messages yet'}
                         </div>
@@ -693,11 +696,11 @@ export default function Messages(): JSX.Element {
                         Joined{' '}
                         {targetUser.createdAt
                           ? new Date(
-                              targetUser.createdAt.seconds * 1000
-                            ).toLocaleString('default', {
-                              month: 'long',
-                              year: 'numeric'
-                            })
+                            targetUser.createdAt.seconds * 1000
+                          ).toLocaleString('default', {
+                            month: 'long',
+                            year: 'numeric'
+                          })
                           : '—'}
                       </span>
                       <span>•</span>
@@ -727,27 +730,24 @@ export default function Messages(): JSX.Element {
                       return (
                         <div
                           key={msg.id}
-                          className={`flex flex-col ${
-                            isMine ? 'items-end' : 'items-start'
-                          }`}
+                          className={`flex flex-col ${isMine ? 'items-end' : 'items-start'
+                            }`}
                         >
                           <div
-                            className={`max-w-[70%] rounded-2xl px-4 py-3 ${
-                              isMine
-                                ? 'rounded-br-md bg-main-accent text-white'
-                                : 'rounded-bl-md bg-light-secondary/10 text-white dark:bg-dark-secondary/20 dark:text-white'
-                            }`}
+                            className={`max-w-[70%] rounded-2xl px-4 py-3 ${isMine
+                              ? 'rounded-br-md bg-main-accent text-white'
+                              : 'rounded-bl-md bg-light-secondary/10 text-white dark:bg-dark-secondary/20 dark:text-white'
+                              }`}
                           >
                             <div className='whitespace-pre-line break-words'>
                               {msg.text}
                             </div>
                           </div>
                           <div
-                            className={`mt-1 text-xs ${
-                              isMine
-                                ? 'pr-2 text-right text-light-secondary dark:text-dark-secondary'
-                                : 'pl-2 text-left text-light-secondary dark:text-dark-secondary'
-                            }`}
+                            className={`mt-1 text-xs ${isMine
+                              ? 'pr-2 text-right text-light-secondary dark:text-dark-secondary'
+                              : 'pl-2 text-left text-light-secondary dark:text-dark-secondary'
+                              }`}
                             style={{ maxWidth: '70%' }}
                           >
                             {formatMessageDate(
@@ -800,10 +800,9 @@ export default function Messages(): JSX.Element {
           open={open}
           closeModal={closeModal}
           modalClassName={`bg-main-background rounded-2xl w-full max-w-lg mx-auto p-0
-            ${
-              isMobile
-                ? 'fixed bottom-0 left-0 right-0 max-w-full rounded-b-none'
-                : 'mt-16'
+            ${isMobile
+              ? 'fixed bottom-0 left-0 right-0 max-w-full rounded-b-none'
+              : 'mt-16'
             }
           `}
         >

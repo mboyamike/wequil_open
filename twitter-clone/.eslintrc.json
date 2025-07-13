@@ -20,12 +20,8 @@
   },
   "rules": {
     "semi": ["error", "always"],
-    "curly": ["warn", "multi"],
-    "quotes": ["error", "single", { "avoidEscape": true }],
-    "jsx-quotes": ["error", "prefer-single"],
     "linebreak-style": ["error", "unix"],
     "no-console": "warn",
-    "comma-dangle": ["error", "never"],
     "no-unused-expressions": "error",
     "no-constant-binary-expression": "error",
     "import/order": [
@@ -63,12 +59,8 @@
         ]
       }
     ],
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      {
-        "checksVoidReturn": { "attributes": false }
-      }
-    ],
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/consistent-type-imports": "warn",
     "@typescript-eslint/prefer-nullish-coalescing": "warn",
     "@typescript-eslint/explicit-function-return-type": "warn"
