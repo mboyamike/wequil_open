@@ -59,7 +59,7 @@ export function MoreSettings(): JSX.Element {
                   {...variants}
                   static
                 >
-                  <Menu.Item>
+                  {/* <Menu.Item>
                     {({ active }): JSX.Element => (
                       <MenuLink
                         className={cn(
@@ -73,8 +73,8 @@ export function MoreSettings(): JSX.Element {
                         Settings and privacy
                       </MenuLink>
                     )}
-                  </Menu.Item>
-                  <Menu.Item>
+                  </Menu.Item> */}
+                  {/* <Menu.Item>
                     {({ active }): JSX.Element => (
                       <MenuLink
                         className={cn(
@@ -88,7 +88,7 @@ export function MoreSettings(): JSX.Element {
                         Help center
                       </MenuLink>
                     )}
-                  </Menu.Item>
+                  </Menu.Item> */}
                   <Menu.Item>
                     {({ active }): JSX.Element => (
                       <Button

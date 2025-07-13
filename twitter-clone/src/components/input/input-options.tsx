@@ -27,25 +27,10 @@ const options: Readonly<Options> = [
     disabled: true
   },
   {
-    name: 'Poll',
-    iconName: 'ChartBarIcon',
-    disabled: true
-  },
-  {
     name: 'Emoji',
     iconName: 'FaceSmileIcon',
     disabled: true
   },
-  {
-    name: 'Schedule',
-    iconName: 'CalendarDaysIcon',
-    disabled: true
-  },
-  {
-    name: 'Location',
-    iconName: 'MapPinIcon',
-    disabled: true
-  }
 ];
 
 type InputOptionsProps = {

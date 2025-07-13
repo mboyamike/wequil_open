@@ -40,6 +40,14 @@ const postImageBorderRadius: Readonly<PostImageBorderRadius> = {
   4: ['rounded-tl-2xl', 'rounded-tr-2xl', 'rounded-bl-2xl', 'rounded-br-2xl']
 };
 
+const optimizeImageUrl = (src: string): string => {
+  // Only optimize if it's not already a wsrv URL
+  if (src.includes('wsrv.nl')) return src;
+  
+  // Use wsrv to optimize with JPEG format and il option
+  return `https://wsrv.nl/?url=${encodeURIComponent(src)}&output=jpg&il`;
+};
+
 export function ImagePreview({
   tweet,
   viewTweet,
@@ -116,6 +124,7 @@ export function ImagePreview({
       <AnimatePresence mode='popLayout'>
         {imagesPreview.map(({ id, src, alt }, index) => {
           const isVideo = imagesPreview[index].type?.includes('video');
+          const optimizedSrc = optimizeImageUrl(src);
 
           return (
             <motion.button
@@ -171,7 +180,7 @@ export function ImagePreview({
                   )}
                   previewCount={previewCount}
                   layout='fill'
-                  src={src}
+                  src={optimizedSrc}
                   alt={alt}
                   useSkeleton={isTweet}
                 />

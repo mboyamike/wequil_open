@@ -18,42 +18,42 @@ import type { User } from '@lib/types/user';
 export type MobileNavLink = Omit<NavLink, 'canBeHidden'>;
 
 const topNavLinks: Readonly<MobileNavLink[]> = [
-  {
-    href: '/trends',
-    linkName: 'Topics',
-    iconName: 'ChatBubbleBottomCenterTextIcon'
-  },
+  // {
+  //   href: '/trends',
+  //   linkName: 'Topics',
+  //   iconName: 'ChatBubbleBottomCenterTextIcon'
+  // },
   {
     href: '/bookmarks',
     linkName: 'Bookmarks',
     iconName: 'BookmarkIcon'
   },
-  {
-    href: '/lists',
-    linkName: 'Lists',
-    iconName: 'Bars3BottomLeftIcon',
-    disabled: true
-  },
-  {
-    href: '/people',
-    linkName: 'Twitter Circle',
-    iconName: 'UserGroupIcon'
-  }
+  // {
+  //   href: '/lists',
+  //   linkName: 'Lists',
+  //   iconName: 'Bars3BottomLeftIcon',
+  //   disabled: true
+  // },
+  // {
+  //   href: '/people',
+  //   linkName: 'Twitter Circle',
+  //   iconName: 'UserGroupIcon'
+  // }
 ];
 
 const bottomNavLinks: Readonly<MobileNavLink[]> = [
-  {
-    href: '/settings',
-    linkName: 'Settings and privacy',
-    iconName: 'Cog8ToothIcon',
-    disabled: true
-  },
-  {
-    href: '/help-center',
-    linkName: 'Help center',
-    iconName: 'QuestionMarkCircleIcon',
-    disabled: true
-  }
+  // {
+  //   href: '/settings',
+  //   linkName: 'Settings and privacy',
+  //   iconName: 'Cog8ToothIcon',
+  //   disabled: true
+  // },
+  // {
+  //   href: '/help-center',
+  //   linkName: 'Help center',
+  //   iconName: 'QuestionMarkCircleIcon',
+  //   disabled: true
+  // }
 ];
 
 type Stats = [string, string, number];
