@@ -12,7 +12,8 @@ import {
   arrayUnion,
   arrayRemove,
   serverTimestamp,
-  getCountFromServer
+  getCountFromServer,
+  getDoc
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './app';
@@ -20,13 +21,17 @@ import {
   usersCollection,
   tweetsCollection,
   userStatsCollection,
-  userBookmarksCollection
+  userBookmarksCollection,
+  useMessagesCollection,
+  conversationCollection
 } from './collections';
 import type { WithFieldValue, Query } from 'firebase/firestore';
 import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
 import type { Theme, Accent } from '@lib/types/theme';
+import { Message } from '@lib/types/message';
+import { Conversation } from '@lib/types/conversation';
 
 export async function checkUsernameAvailability(
   username: string
@@ -280,4 +285,88 @@ export async function clearAllBookmarks(userId: string): Promise<void> {
   bookmarksSnapshot.forEach(({ ref }) => batch.delete(ref));
 
   await batch.commit();
+}
+
+
+export async function createMessage(
+  conversationId: string,
+  data: Message,
+  userId: string,
+  participants: string[],
+): Promise<void> {
+  const conversationRef = doc(conversationCollection, conversationId);
+  const messageRef = doc(useMessagesCollection(conversationId), data.id);
+
+  try {
+    // Check if conversation exists
+    const conversationDoc = await getDoc(conversationRef);
+    
+    if (!conversationDoc.exists()) {
+      // Create conversation using the Conversation model
+      const conversationData: Conversation = {
+        id: conversationId,
+        participants: participants,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        // lastMessage will be set after the message is created
+      };
+      
+      await setDoc(conversationRef, conversationData);
+    }
+    
+    // Create the message using the Message model
+    const messageData: Message = {
+      ...data,
+      conversationId: conversationId,
+      senderId: userId,
+      createdAt: serverTimestamp(),
+      // updatedAt: serverTimestamp(),
+    };
+    
+    await setDoc(messageRef, messageData);
+    
+    // Update conversation with last message info
+    await updateDoc(conversationRef, {
+      lastMessage: {
+        id: data.id,
+        text: data.text,
+        senderId: userId,
+        createdAt: new Date().toISOString(),
+        readBy: [userId], // Mark as read by sender
+      },
+      updatedAt: serverTimestamp(),
+    });
+    
+  } catch (error) {
+    console.error('Error creating message:', error);
+    throw error;
+  }
+}
+
+export async function createConversation(
+  conversationId: string,
+  participants: string[],
+): Promise<void> {
+  const conversationRef = doc(conversationCollection, conversationId);
+
+  try {
+    // Check if conversation exists
+    const conversationDoc = await getDoc(conversationRef);
+    
+    if (!conversationDoc.exists()) {
+      // Create conversation using the Conversation model
+      const conversationData: Conversation = {
+        id: conversationId,
+        participants: participants,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        // No lastMessage initially
+      };
+      
+      await setDoc(conversationRef, conversationData);
+    }
+  } catch (error) {
+    console.error('Error creating conversation:', error);
+    throw error;
+  }
 }

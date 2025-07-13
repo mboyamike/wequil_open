@@ -1,11 +1,11 @@
-import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
+import type { Timestamp, FirestoreDataConverter, FieldValue } from 'firebase/firestore';
 
 export type Message = {
   id: string;
-  pconversationId: string; // The conversation this message belongs to
+  conversationId: string; // The conversation this message belongs to
   senderId: string;       // User ID of the sender
   text: string;           // Message content
-  createdAt: string;      // ISO string or timestamp
+  createdAt: FieldValue;      // ISO string or timestamp
   readBy: string[]; 
 };
 

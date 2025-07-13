@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useAuth } from '@lib/context/auth-context';
 import { useWindow } from '@lib/context/window-context';
 import { useModal } from '@lib/hooks/useModal';
+import { useRouter } from 'next/router';
 import { Modal } from '@components/modal/modal';
 import { Input } from '@components/input/input';
 import { CustomIcon } from '@components/ui/custom-icon';
@@ -48,10 +49,14 @@ const navLinks: Readonly<NavLink[]> = [
 export function Sidebar(): JSX.Element {
   const { user } = useAuth();
   const { isMobile } = useWindow();
+  const { pathname, query } = useRouter();
 
   const { open, openModal, closeModal } = useModal();
 
   const username = user?.username as string;
+
+  // Check if we're on messages page with a conversation selected
+  const isMessagesWithConversation = pathname === '/messages' && query.user;
 
   return (
     <header
@@ -96,18 +101,21 @@ export function Sidebar(): JSX.Element {
             />
             {!isMobile && <MoreSettings />}
           </nav>
-          <Button
-            className='accent-tab absolute right-4 -translate-y-[72px] bg-main-accent text-lg font-bold text-white
-                       outline-none transition hover:brightness-90 active:brightness-75 xs:static xs:translate-y-0
-                       xs:hover:bg-main-accent/90 xs:active:bg-main-accent/75 xl:w-11/12'
-            onClick={openModal}
-          >
-            <CustomIcon
-              className='block h-6 w-6 xl:hidden'
-              iconName='FeatherIcon'
-            />
-            <p className='hidden xl:block'>Tweet</p>
-          </Button>
+          {/* Hide the tweet button on mobile when viewing a conversation */}
+          {!isMobile || !isMessagesWithConversation ? (
+            <Button
+              className='accent-tab absolute right-4 -translate-y-[72px] bg-main-accent text-lg font-bold text-white
+                         outline-none transition hover:brightness-90 active:brightness-75 xs:static xs:translate-y-0
+                         xs:hover:bg-main-accent/90 xs:active:bg-main-accent/75 xl:w-11/12'
+              onClick={openModal}
+            >
+              <CustomIcon
+                className='block h-6 w-6 xl:hidden'
+                iconName='FeatherIcon'
+              />
+              <p className='hidden xl:block'>Tweet</p>
+            </Button>
+          ) : null}
         </section>
         {!isMobile && <SidebarProfile />}
       </div>
