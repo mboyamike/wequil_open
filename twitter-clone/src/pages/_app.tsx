@@ -2,6 +2,7 @@ import '@styles/globals.scss';
 
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { ThemeContextProvider } from '@lib/context/theme-context';
+import { MessagingContextProvider } from '@lib/context/messaging-context';
 import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
@@ -26,7 +27,9 @@ export default function App({
       <AppHead />
       <AuthContextProvider>
         <ThemeContextProvider>
-          {getLayout(<Component {...pageProps} />)}
+          <MessagingContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </MessagingContextProvider>
         </ThemeContextProvider>
       </AuthContextProvider>
     </>
