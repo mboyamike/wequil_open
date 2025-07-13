@@ -13,6 +13,6 @@ import { initializeApp } from 'firebase-admin/app';
 initializeApp();
 
 // Import and export your trigger functions
-export { onTweetDeleted } from './triggers/tweet_triggers';
-
+export { onTweetDeleted, onTweetLiked, onTweetCreated } from './triggers/tweet_triggers';
+export { onUserFollowed } from './triggers/user_triggers'
 
