@@ -20,13 +20,15 @@ import {
   usersCollection,
   tweetsCollection,
   userStatsCollection,
-  userBookmarksCollection
+  userBookmarksCollection,
+  useMessagesCollection
 } from './collections';
 import type { WithFieldValue, Query } from 'firebase/firestore';
 import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
 import type { Theme, Accent } from '@lib/types/theme';
+import { Message } from '@lib/types/message';
 
 export async function checkUsernameAvailability(
   username: string
@@ -281,3 +283,13 @@ export async function clearAllBookmarks(userId: string): Promise<void> {
 
   await batch.commit();
 }
+
+// export async function createMessage(
+//   conversationId: string,
+//   data: Message,
+//   userId: string,
+// ): Promise<Message> {
+//   const messageRef = doc(useMessagesCollection(userId), data.id);
+
+  
+// }
