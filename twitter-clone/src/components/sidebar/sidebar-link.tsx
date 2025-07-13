@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import cn from 'clsx';
-import { preventBubbling } from '@lib/utils';
+import * as utils from '@lib/utils';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { NavLink } from './sidebar';
 
@@ -28,7 +28,7 @@ export function SidebarLink({
           canBeHidden ? 'hidden xs:flex' : 'flex',
           disabled && 'cursor-not-allowed'
         )}
-        onClick={disabled ? preventBubbling() : undefined}
+        onClick={disabled ? utils.preventBubbling() : undefined}
       >
         <div
           className={cn(
