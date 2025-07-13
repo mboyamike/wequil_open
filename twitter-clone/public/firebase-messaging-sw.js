@@ -4,8 +4,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.9.4/firebase-messaging-compa
 
 // Your Firebase configuration
 const firebaseConfig = {
-  // You'll need to add your Firebase config here
-  // This should match your client-side config
+  apiKey: "AIzaSyANmTR8VTTTKMKRrJ10dbupcXAuVulUHzk",
+  authDomain: "wequilmeet.firebaseapp.com",
+  projectId: "wequilmeet",
+  storageBucket: "wequilmeet.firebasestorage.app",
+  messagingSenderId: "813060069651",
+  appId: "1:813060069651:web:03ab93488c19b5bc0d62e6",
+  databaseURL: "https://wequilmeet-default-rtdb.firebaseio.com"
 };
 
 // Initialize Firebase

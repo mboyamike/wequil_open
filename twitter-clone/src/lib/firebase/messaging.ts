@@ -7,7 +7,9 @@ export class FirebaseMessagingService {
   private messaging;
 
   constructor() {
-    this.messaging = getMessaging(getFirebase().firebaseApp);
+    if (typeof window !== 'undefined') {
+      this.messaging = getMessaging(getFirebase().firebaseApp);
+    }
   }
 
   async requestPermissionAndGetToken(): Promise<string | null> {
