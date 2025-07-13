@@ -7,7 +7,6 @@ import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { MainHeader } from '@components/home/main-header';
 import { MainContainer } from '@components/home/main-container';
-import { AsideTrends } from '@components/aside/aside-trends';
 import { Button } from '@components/ui/button';
 import { ToolTip } from '@components/ui/tooltip';
 import { HeroIcon } from '@components/ui/hero-icon';
@@ -28,7 +27,6 @@ export default function Bookmarks(): JSX.Element {
           <ToolTip tip='Settings' />
         </Button>
       </MainHeader>
-      <AsideTrends inTrendsPage />
     </MainContainer>
   );
 }
