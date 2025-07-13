@@ -29,7 +29,17 @@ function initialize(): Firebase {
   const storage = getStorage(firebaseApp);
   const firestore = getFirestore(firebaseApp);
   const functions = getFunctions(firebaseApp);
-  const messaging = getMessaging(firebaseApp);
+  
+  let messaging: Messaging | undefined;
+  if (typeof window !== 'undefined') {
+    try {
+      messaging = getMessaging(firebaseApp);
+    } catch (error) {
+      console.error('Failed to initialize Firebase Messaging:', error);
+   
+    }
+  }
+  
 
   return { firebaseApp, auth, firestore, storage, functions, messaging };
 }
