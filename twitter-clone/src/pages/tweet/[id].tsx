@@ -1,10 +1,6 @@
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
-import { doc, query, where, orderBy } from 'firebase/firestore';
-import { tweetsCollection } from '@lib/firebase/collections';
-import { useCollection } from '@lib/hooks/useCollection';
-import { useDocument } from '@lib/hooks/useDocument';
 import { isPlural } from '@lib/utils';
 import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
@@ -16,6 +12,8 @@ import { SEO } from '@components/common/seo';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
 import { ViewParentTweet } from '@components/view/view-parent-tweet';
+import { useTweetDocument } from '@lib/hooks/tweets/useTweetDocument';
+import { useTweetReplies } from '@lib/hooks/tweets/useTweetReplies';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function TweetId(): JSX.Element {
@@ -24,19 +22,15 @@ export default function TweetId(): JSX.Element {
     back
   } = useRouter();
 
-  const { data: tweetData, loading: tweetLoading } = useDocument(
-    doc(tweetsCollection, id as string),
+  const { data: tweetData, loading: tweetLoading } = useTweetDocument(
+    id as string,
     { includeUser: true, allowNull: true }
   );
 
   const viewTweetRef = useRef<HTMLElement>(null);
 
-  const { data: repliesData, loading: repliesLoading } = useCollection(
-    query(
-      tweetsCollection,
-      where('parent.id', '==', id),
-      orderBy('createdAt', 'desc')
-    ),
+  const { data: repliesData, loading: repliesLoading } = useTweetReplies(
+    id as string,
     { includeUser: true, allowNull: true }
   );
 
