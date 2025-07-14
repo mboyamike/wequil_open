@@ -9,6 +9,7 @@ import type { Bookmark } from '@lib/types/bookmark';
 import type { Stats } from '@lib/types/stats';
 import { conversationConverter } from '@lib/types/conversation';
 import { Message, messagesConverter } from '@lib/types/message';
+import { notificationsConverter } from '@lib/types/notification';
 
 export const usersCollection = collection(db, 'users').withConverter(
   userConverter
@@ -20,6 +21,10 @@ export const tweetsCollection = collection(db, 'tweets').withConverter(
 
 export const conversationCollection = collection(db, 'conversations').withConverter(
   conversationConverter
+);
+
+export const notificationsCollection = collection(db, 'notifications').withConverter(
+  notificationsConverter
 );
 
 export function userBookmarksCollection(
