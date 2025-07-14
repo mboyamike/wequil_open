@@ -37,14 +37,14 @@ export interface NotificationData {
     };
   }
 
-  export const notificationsConverter: FirestoreDataConverter<Notification> = {
+  export const notificationsConverter: FirestoreDataConverter<NotificationData> = {
     toFirestore(notification) {
       return { ...notification };
     },
     fromFirestore(snapshot, options) {
       const data = snapshot.data(options);
   
-      return { ...data } as Notification;
+      return { ...data } as NotificationData;
     }
   };
   

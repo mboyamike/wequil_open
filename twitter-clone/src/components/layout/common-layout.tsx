@@ -27,6 +27,18 @@ export function HomeLayout({ children }: LayoutProps): JSX.Element {
   );
 }
 
+
+export function NotificationsLayout({ children }: LayoutProps): JSX.Element {
+  return (
+    <>
+      {children}
+      <Aside>
+        <Suggestions />
+      </Aside>
+    </>
+  );
+}
+
 export function UserLayout({ children }: LayoutProps): JSX.Element {
   return (
     <>
