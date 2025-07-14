@@ -13,9 +13,21 @@ import type { ReactElement, ReactNode } from 'react';
 import type { NotificationData } from '@lib/types/notification';
 import { useRouter } from 'next/router';
 import { StatsEmpty } from '@components/tweet/stats-empty';
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useCollection } from '@lib/hooks/useCollection';
+
+function formatNotificationTime(date: Date): string {
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (seconds < 60) return `${Math.max(1, seconds)}sec`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}min${minutes > 1 ? 's' : ''}`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}hr${hours > 1 ? 's' : ''}`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}day${days > 1 ? 's' : ''}`;
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
 
 export default function Notifications(): JSX.Element {
   const { user } = useAuth();
@@ -106,7 +118,7 @@ export default function Notifications(): JSX.Element {
                     <div>{content}</div>
                     <div className='text-xs text-light-secondary dark:text-dark-secondary'>
                       {notif.createdAt && notif.createdAt.toDate
-                        ? new Date(notif.createdAt.toDate()).toLocaleString()
+                        ? formatNotificationTime(new Date(notif.createdAt.toDate()))
                         : ''}
                     </div>
                   </div>
