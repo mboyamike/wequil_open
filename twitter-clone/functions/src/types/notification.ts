@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface NotificationData {
     id: string;
     type: 'like' | 'reply' | 'retweet' | 'follow' | 'mention' | 'new_post';
@@ -8,7 +10,7 @@ export interface NotificationData {
     parentType?: 'tweet' | 'project' | 'room';
     parentId?: string;
     read: boolean;
-    createdAt: FirebaseFirestore.Timestamp;
+    createdAt: Timestamp;
     
     // Cached data for performance
     actorUsername: string;

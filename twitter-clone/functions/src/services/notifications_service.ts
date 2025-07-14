@@ -1,6 +1,7 @@
 import { firestore } from 'firebase-admin';
 import { NotificationData } from '../types/notification';
 import { FCMService } from './fcm_service';
+import { Timestamp } from 'firebase/firestore';
 
 export class NotificationService {
   private db = firestore();
@@ -13,7 +14,7 @@ export class NotificationService {
       ...data,
       id: notificationRef.id,
       read: false,
-      createdAt: firestore.Timestamp.now()
+      createdAt: Timestamp.now()
     };
 
     const settings = await this.getUserNotificationSettings(data.recipientId);
