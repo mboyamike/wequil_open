@@ -5,6 +5,7 @@ import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
 import { variants } from './input';
 import { ProgressBar } from './progress-bar';
+import { EmojiPickerComponent } from './emoji-picker';
 import type { ChangeEvent, ClipboardEvent } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
 
@@ -29,7 +30,7 @@ const options: Readonly<Options> = [
   {
     name: 'Emoji',
     iconName: 'FaceSmileIcon',
-    disabled: true
+    disabled: false
   },
 ];
 
@@ -43,6 +44,7 @@ type InputOptionsProps = {
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
+  onEmojiSelect?: (emoji: string) => void;
 };
 
 export function InputOptions({
@@ -52,7 +54,8 @@ export function InputOptions({
   inputLength,
   isValidTweet,
   isCharLimitExceeded,
-  handleImageUpload
+  handleImageUpload,
+  onEmojiSelect
 }: InputOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -79,18 +82,31 @@ export function InputOptions({
           ref={inputFileRef}
           multiple
         />
-        {filteredOptions.map(({ name, iconName, disabled }, index) => (
-          <Button
-            className='accent-tab accent-bg-tab group relative rounded-full p-2 
-                       hover:bg-main-accent/10 active:bg-main-accent/20'
-            onClick={index === 0 ? onClick : undefined}
-            disabled={disabled}
-            key={name}
-          >
-            <HeroIcon className='h-5 w-5' iconName={iconName} />
-            <ToolTip tip={name} modal={modal} />
-          </Button>
-        ))}
+        {filteredOptions.map(({ name, iconName, disabled }, index) => {
+          // Handle emoji picker separately
+          if (name === 'Emoji' && onEmojiSelect) {
+            return (
+              <EmojiPickerComponent
+                key={name}
+                onEmojiSelect={onEmojiSelect}
+                modal={modal}
+              />
+            );
+          }
+
+          return (
+            <Button
+              className='accent-tab accent-bg-tab group relative rounded-full p-2 
+                         hover:bg-main-accent/10 active:bg-main-accent/20'
+              onClick={index === 0 ? onClick : undefined}
+              disabled={disabled}
+              key={name}
+            >
+              <HeroIcon className='h-5 w-5' iconName={iconName} />
+              <ToolTip tip={name} modal={modal} />
+            </Button>
+          );
+        })}
       </div>
       <div className='flex items-center gap-4'>
         <motion.div
