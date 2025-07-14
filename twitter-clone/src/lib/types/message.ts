@@ -1,4 +1,4 @@
-import type { Timestamp, FirestoreDataConverter, FieldValue } from 'firebase/firestore';
+import type { FirestoreDataConverter, FieldValue } from 'firebase/firestore';
 
 export type Message = {
   id: string;

@@ -4,6 +4,7 @@ import { usersCollection } from '@lib/firebase/collections';
 import { useCacheRef } from './useCacheRef';
 import type { DocumentReference } from 'firebase/firestore';
 import type { User } from '@lib/types/user';
+import { type TweetDocumentOptions } from '@lib/types/tweet';
 
 type UseDocument<T> = {
   data: T | null;
@@ -15,17 +16,17 @@ type DataWithUser<T> = UseDocument<T & { user: User }>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options: { includeUser: true; allowNull?: boolean; disabled?: boolean }
+  options: TweetDocumentOptions
 ): DataWithUser<T>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser?: false; allowNull?: boolean; disabled?: boolean }
+  options?: TweetDocumentOptions
 ): UseDocument<T>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser?: boolean; allowNull?: boolean; disabled?: boolean }
+  options?: TweetDocumentOptions
 ): UseDocument<T> | DataWithUser<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
