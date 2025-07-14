@@ -28,3 +28,9 @@ export const tweetConverter: FirestoreDataConverter<Tweet> = {
     return { id, ...data } as Tweet;
   }
 };
+
+export type TweetDocumentOptions = {
+  includeUser?: boolean;
+  allowNull?: boolean;
+  disabled?: boolean;
+};

@@ -191,6 +191,24 @@ export function Input({
 
   const handleFocus = (): void => setVisited(!loading);
 
+  const handleEmojiSelect = (emoji: string): void => {
+    const textarea = inputRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = inputValue;
+    
+    const newText = text.substring(0, start) + emoji + text.substring(end);
+    setInputValue(newText);
+    
+    
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + emoji.length, start + emoji.length);
+    }, 0);
+  };
+
   const formId = useId();
 
   const inputLimit = isAdmin ? 560 : 280;
@@ -277,6 +295,7 @@ export function Input({
                 isValidTweet={isValidTweet}
                 isCharLimitExceeded={isCharLimitExceeded}
                 handleImageUpload={handleImageUpload}
+                onEmojiSelect={handleEmojiSelect}
               />
             )}
           </AnimatePresence>

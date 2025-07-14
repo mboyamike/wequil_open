@@ -69,7 +69,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     >
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-main-background rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
+        modalClassName='bg-main-background rounded-2xl max-w-xl w-full mt-8 overflow-visible'
         open={open}
         closeModal={closeModal}
       >

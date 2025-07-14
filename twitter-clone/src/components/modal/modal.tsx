@@ -65,6 +65,7 @@ export function Modal({
             <Dialog.Panel
               className={modalClassName}
               as={motion.div}
+              data-modal="true"
               {...(modalAnimation ?? modal)}
               onClick={closePanelOnClick ? closeModal : undefined}
             >
