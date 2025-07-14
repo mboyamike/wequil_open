@@ -33,16 +33,40 @@ export function EmojiPickerComponent({ onEmojiSelect, modal }: EmojiPickerProps)
     if (!buttonRef.current) return;
     
     const buttonRect = buttonRef.current.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
     const pickerHeight = 400; // Height of emoji picker
-    const spaceBelow = viewportHeight - buttonRect.bottom;
-    const spaceAbove = buttonRect.top;
     
-    // If there's not enough space below, show above
-    if (spaceBelow < pickerHeight && spaceAbove > pickerHeight) {
-      setPosition('top');
+    if (modal) {
+      // In modal context, find the modal container
+      const modalContainer = buttonRef.current.closest('[role="dialog"]') || 
+                           buttonRef.current.closest('.modal') ||
+                           buttonRef.current.closest('[data-modal]');
+      
+      if (modalContainer) {
+        const modalRect = modalContainer.getBoundingClientRect();
+        const spaceBelow = modalRect.bottom - buttonRect.bottom;
+        const spaceAbove = buttonRect.top - modalRect.top;
+        
+        // Prefer showing above in modals to avoid overflow
+        if (spaceAbove > pickerHeight || spaceAbove > spaceBelow) {
+          setPosition('top');
+        } else {
+          setPosition('bottom');
+        }
+      } else {
+        // Fallback: default to top for modals
+        setPosition('top');
+      }
     } else {
-      setPosition('bottom');
+      // Regular viewport calculation
+      const viewportHeight = window.innerHeight;
+      const spaceBelow = viewportHeight - buttonRect.bottom;
+      const spaceAbove = buttonRect.top;
+      
+      if (spaceBelow < pickerHeight && spaceAbove > pickerHeight) {
+        setPosition('top');
+      } else {
+        setPosition('bottom');
+      }
     }
   };
 
@@ -84,6 +108,37 @@ export function EmojiPickerComponent({ onEmojiSelect, modal }: EmojiPickerProps)
 
   const themeStyles = getThemeStyles();
 
+  // For modals, we need to render the picker with a higher z-index and better positioning
+  const getPickerPositionClass = () => {
+    if (modal) {
+      return `fixed ${position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`;
+    }
+    return `absolute right-0 ${position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'}`;
+  };
+
+  const getPickerStyle = () => {
+    if (!modal || !buttonRef.current) return {};
+    
+    const buttonRect = buttonRef.current.getBoundingClientRect();
+    const pickerWidth = 350;
+    
+    // Calculate left position to keep picker in view
+    const leftPosition = Math.min(
+      buttonRect.left,
+      window.innerWidth - pickerWidth - 16 // 16px margin from edge
+    );
+    
+    return {
+      position: 'fixed' as const,
+      left: `${leftPosition}px`,
+      [position === 'top' ? 'bottom' : 'top']: position === 'top' 
+        ? `${window.innerHeight - buttonRect.top + 8}px`
+        : `${buttonRect.bottom + 8}px`,
+      zIndex: 9999,
+      right: 'auto'
+    };
+  };
+
   return (
     <div className="relative" ref={pickerRef}>
       <Button
@@ -103,11 +158,8 @@ export function EmojiPickerComponent({ onEmojiSelect, modal }: EmojiPickerProps)
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: position === 'top' ? 10 : -10 }}
             transition={{ duration: 0.15 }}
-            className={`absolute right-0 z-50 ${
-              position === 'top' 
-                ? 'bottom-full mb-2' 
-                : 'top-full mt-2'
-            }`}
+            className={`z-50 ${getPickerPositionClass()}`}
+            style={getPickerStyle()}
           >
             <div 
               className="rounded-lg shadow-xl border"
@@ -129,7 +181,6 @@ export function EmojiPickerComponent({ onEmojiSelect, modal }: EmojiPickerProps)
                 }}
                 theme={theme === 'light' ? Theme.LIGHT : Theme.DARK}
                 searchPlaceholder="Search emoji..."
-                
               />
             </div>
           </motion.div>

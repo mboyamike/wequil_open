@@ -63,10 +63,10 @@ export function InputOptions({
 
   let filteredOptions = options;
 
-  if (reply)
-    filteredOptions = filteredOptions.filter(
-      (_, index) => ![2, 4].includes(index)
-    );
+  // if (reply)
+    // filteredOptions = filteredOptions.filter(
+    //   (_, index) => ![2, 4].includes(index)
+    // );
 
   return (
     <motion.div className='flex justify-between' {...variants}>
