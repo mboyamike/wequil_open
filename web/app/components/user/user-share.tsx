@@ -1,13 +1,13 @@
 import cn from 'clsx';
-import { Popover } from '@headlessui/react';
+import { Button, Popover } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { preventBubbling } from '@lib/utils';
-import { siteURL } from '@lib/env';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
-import { variants } from '@components/tweet/tweet-actions';
+import { siteURL } from '~/lib/env';
+import type { JSX } from 'react';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
+import { variants } from './user-header';
+import { preventBubbling } from '~/lib/utils';
 
 type UserShareProps = {
   username: string;

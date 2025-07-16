@@ -1,14 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu } from '@headlessui/react';
+import { Button, Menu } from '@headlessui/react';
 import cn from 'clsx';
-import { useModal } from '@lib/hooks/useModal';
-import { preventBubbling } from '@lib/utils';
-import { Modal } from '@components/modal/modal';
-import { DisplayModal } from '@components/modal/display-modal';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { Button } from '@components/ui/button';
 import { MenuLink } from './menu-link';
 import type { Variants } from 'framer-motion';
+import type { JSX } from 'react';
+import { useModal } from '~/lib/hooks/useModal';
+import { Modal } from '../modal/modal';
+import { DisplayModal } from '../modal/display-modal';
+import { HeroIcon } from '../ui/hero-icon';
 
 export const variants: Variants = {
   initial: { opacity: 0, y: 50 },

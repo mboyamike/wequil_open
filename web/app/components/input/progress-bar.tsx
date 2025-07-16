@@ -1,5 +1,6 @@
 import cn from 'clsx';
-import { ToolTip } from '@components/ui/tooltip';
+import type { JSX } from 'react';
+import { ToolTip } from '../ui/tooltip';
 
 type ProgressBarProps = {
   modal?: boolean;

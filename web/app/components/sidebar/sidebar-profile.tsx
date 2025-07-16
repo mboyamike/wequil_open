@@ -1,18 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu } from '@headlessui/react';
+import { Button, Menu } from '@headlessui/react';
 import cn from 'clsx';
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { Modal } from '@components/modal/modal';
-import { ActionModal } from '@components/modal/action-modal';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { CustomIcon } from '@components/ui/custom-icon';
-import { UserAvatar } from '@components/user/user-avatar';
-import { UserName } from '@components/user/user-name';
-import { UserUsername } from '@components/user/user-username';
 import { variants } from './more-settings';
-import type { User } from '@lib/types/user';
+import type { JSX } from 'react';
+import { useAuth } from '~/lib/context/auth-context';
+import { useModal } from '~/lib/hooks/useModal';
+import type { User } from '~/lib/types/user';
+import { Modal } from '../modal/modal';
+import { ActionModal } from '../modal/action-modal';
+import { UserAvatar } from '../user/user-avatar';
+import { UserName } from '../user/user-name';
+import { UserUsername } from '../user/user-username';
+import { HeroIcon } from '../ui/hero-icon';
+import { CustomIcon } from '../ui/custom-icon';
 
 export function SidebarProfile(): JSX.Element {
   const { user, signOut } = useAuth();

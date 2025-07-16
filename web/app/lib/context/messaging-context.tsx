@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { messagingService } from '@lib/firebase/messaging';
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { messagingService } from '../firebase/messaging';
 
 interface MessagingContextType {
   fcmToken: string | null;

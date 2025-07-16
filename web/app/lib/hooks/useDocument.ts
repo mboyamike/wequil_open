@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getDoc, doc, onSnapshot } from 'firebase/firestore';
-import { usersCollection } from '@lib/firebase/collections';
 import { useCacheRef } from './useCacheRef';
 import type { DocumentReference } from 'firebase/firestore';
-import type { User } from '@lib/types/user';
-import { type TweetDocumentOptions } from '@lib/types/tweet';
+import type { User } from '../types/user';
+import type { TweetDocumentOptions } from '../types/tweet';
+import { usersCollection } from '../firebase/collections';
 
 type UseDocument<T> = {
   data: T | null;

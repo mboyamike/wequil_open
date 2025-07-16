@@ -1,7 +1,9 @@
-import { useAuth } from '@lib/context/auth-context';
-import { NextImage } from '@components/ui/next-image';
-import { CustomIcon } from '@components/ui/custom-icon';
-import { Button } from '@components/ui/button';
+import type { JSX } from "react";
+import { useAuth } from "~/lib/context/auth-context";
+import { NextImage } from "../ui/next-image";
+import { CustomIcon } from "../ui/custom-icon";
+import { Button } from "../ui/button";
+
 
 export function LoginMain(): JSX.Element {
   const { signInWithGoogle } = useAuth();
@@ -14,7 +16,7 @@ export function LoginMain(): JSX.Element {
           blurClassName='bg-accent-blue'
           src='/assets/twitter-banner.png'
           alt='Twitter banner'
-          layout='fill'
+          // layout='fill'
           useSkeleton
         />
         <i className='absolute'>

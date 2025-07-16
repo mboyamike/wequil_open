@@ -1,29 +1,32 @@
-import Link from 'next/link';
 import { useState, useEffect, useRef, useId } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { tweetsCollection } from '@lib/firebase/collections';
 import {
   manageReply,
   uploadImages,
   manageTotalTweets,
   manageTotalPhotos
-} from '@lib/firebase/utils';
-import { useAuth } from '@lib/context/auth-context';
-import { sleep } from '@lib/utils';
-import { getImagesData } from '@lib/validation';
-import { UserAvatar } from '@components/user/user-avatar';
+} from '~/lib/firebase/utils';
 import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
-import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
+import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent, JSX } from 'react';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
-import type { User } from '@lib/types/user';
-import type { Tweet } from '@lib/types/tweet';
-import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
+import { useAuth } from '~/lib/context/auth-context';
+import type { User } from '~/lib/types/user';
+import type { Tweet } from '~/lib/types/tweet';
+import { sleep } from '~/lib/utils';
+import { tweetsCollection } from '~/lib/firebase/collections';
+import { Link } from 'react-router';
+import { getImagesData } from '~/lib/validation';
+import { UserAvatar } from '../user/user-avatar';
+
+export type PostImageData = { id: string; src: string; alt: string; type?: string };
+export type ImagesPreview = PostImageData[];
+export type FileWithId = File & { id: string };
 
 type InputProps = {
   modal?: boolean;
@@ -49,7 +52,7 @@ export function Input({
   replyModal,
   closeModal
 }: InputProps): JSX.Element {
-  const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
+  const [selectedImages, setSelectedImages] = useState<FileWithId[]>([]);
   const [imagesPreview, setImagesPreview] = useState<ImagesPreview>([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -115,8 +118,8 @@ export function Input({
       () => (
         <span className='flex gap-2'>
           Your Tweet was sent
-          <Link href={`/tweet/${tweetId}`}>
-            <a className='custom-underline font-bold'>View</a>
+          <Link to={`/tweet/${tweetId}`}>
+            <span className='custom-underline font-bold'>View</span>
           </Link>
         </span>
       ),
@@ -160,7 +163,7 @@ export function Input({
 
     const { src } = imagesPreview.find(
       ({ id }) => id === targetId
-    ) as ImageData;
+    ) as PostImageData;
 
     URL.revokeObjectURL(src);
   };
@@ -239,10 +242,10 @@ export function Input({
           {...fromTop}
         >
           Replying to{' '}
-          <Link href={`/user/${parent?.username as string}`}>
-            <a className='custom-underline text-main-accent'>
+          <Link to={`/user/${parent?.username as string}`}>
+            <span className='custom-underline text-main-accent'>
               {parent?.username as string}
-            </a>
+            </span>
           </Link>
         </motion.p>
       )}

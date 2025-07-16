@@ -1,7 +1,6 @@
-import { Dialog } from '@headlessui/react';
-import { CustomIcon } from '@components/ui/custom-icon';
-import { Button } from '@components/ui/button';
-import type { ReactNode, FormEvent } from 'react';
+import { Button, Dialog } from '@headlessui/react';
+import type { ReactNode, FormEvent, JSX } from 'react';
+import { CustomIcon } from '../ui/custom-icon';
 
 type UsernameModalProps = {
   loading: boolean;
@@ -64,8 +63,7 @@ export function UsernameModal({
                      dark:bg-light-border dark:text-light-primary dark:focus-visible:bg-light-border/90 
                      dark:enabled:hover:bg-light-border/90 dark:enabled:active:bg-light-border/75'
           type='submit'
-          loading={loading}
-          disabled={!available}
+          disabled={!available || loading}
         >
           Set username
         </Button>

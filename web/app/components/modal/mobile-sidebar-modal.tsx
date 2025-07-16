@@ -1,19 +1,20 @@
-import Link from 'next/link';
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { Button } from '@components/ui/button';
-import { UserAvatar } from '@components/user/user-avatar';
-import { NextImage } from '@components/ui/next-image';
-import { UserName } from '@components/user/user-name';
-import { UserUsername } from '@components/user/user-username';
-import { MainHeader } from '@components/home/main-header';
-import { MobileSidebarLink } from '@components/sidebar/mobile-sidebar-link';
-import { HeroIcon } from '@components/ui/hero-icon';
 import { Modal } from './modal';
 import { ActionModal } from './action-modal';
 import { DisplayModal } from './display-modal';
-import type { NavLink } from '@components/sidebar/sidebar';
-import type { User } from '@lib/types/user';
+import type { NavLink } from '../sidebar/sidebar';
+import type { User } from '~/lib/types/user';
+import { useAuth } from '~/lib/context/auth-context';
+import type { JSX } from 'react';
+import { useModal } from '~/lib/hooks/useModal';
+import { MainHeader } from '../home/main-header';
+import { Link } from 'react-router';
+import { NextImage } from '../ui/next-image';
+import { UserAvatar } from '../user/user-avatar';
+import { UserName } from '../user/user-name';
+import { UserUsername } from '../user/user-username';
+import { MobileSidebarLink } from '../sidebar/mobile-sidebar-link';
+import { Button } from '@headlessui/react';
+import { HeroIcon } from '../ui/hero-icon';
 
 export type MobileNavLink = Omit<NavLink, 'canBeHidden'>;
 
@@ -136,20 +137,18 @@ export function MobileSidebarModal({
         action={closeModal}
       />
       <section className='mt-0.5 flex flex-col gap-2 px-4'>
-        <Link href={userLink}>
-          <a className='blur-picture relative h-20 rounded-md'>
-            {coverPhotoURL ? (
-              <NextImage
-                useSkeleton
-                imgClassName='rounded-md'
-                src={coverPhotoURL}
-                alt={name}
-                layout='fill'
-              />
-            ) : (
-              <div className='h-full rounded-md bg-light-line-reply dark:bg-dark-line-reply' />
-            )}
-          </a>
+        <Link to={userLink} className='blur-picture relative h-20 rounded-md'>
+          {coverPhotoURL ? (
+            <NextImage
+              useSkeleton
+              imgClassName='rounded-md'
+              src={coverPhotoURL}
+              alt={name}
+              // layout='fill'
+            />
+          ) : (
+            <div className='h-full rounded-md bg-light-line-reply dark:bg-dark-line-reply' />
+          )}
         </Link>
         <div className='mb-8 ml-2 -mt-4'>
           <UserAvatar
@@ -174,7 +173,7 @@ export function MobileSidebarModal({
           </div>
           <div className='text-secondary flex gap-4'>
             {allStats.map(([id, label, stat]) => (
-              <Link href={`${userLink}/${id}`} key={id}>
+              <Link to={`${userLink}/${id}`} key={id}>
                 <a
                   className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
                              outline-none hover:border-b-light-primary focus-visible:border-b-light-primary

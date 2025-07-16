@@ -1,4 +1,5 @@
 import cn from 'clsx';
+import type { JSX } from 'react';
 
 type IconName = keyof typeof Icons;
 

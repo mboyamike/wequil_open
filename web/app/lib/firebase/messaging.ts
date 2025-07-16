@@ -1,4 +1,4 @@
-import { getMessaging, getToken, MessagePayload, onMessage, Unsubscribe } from 'firebase/messaging';
+import { getMessaging, getToken, type MessagePayload, onMessage, type Unsubscribe } from 'firebase/messaging';
 import { getFirebase } from './app';
 
 const VAPID_KEY = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;

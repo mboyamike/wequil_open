@@ -1,16 +1,16 @@
-import Link from 'next/link';
 import cn from 'clsx';
-import { Popover } from '@headlessui/react';
+import { Button, Popover } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { useAuth } from '@lib/context/auth-context';
-import { manageBookmark } from '@lib/firebase/utils';
-import { preventBubbling } from '@lib/utils';
-import { siteURL } from '@lib/env';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
 import { variants } from './tweet-actions';
+import type { JSX } from 'react';
+import { useAuth } from '~/lib/context/auth-context';
+import { manageBookmark } from '~/lib/firebase/utils';
+import { siteURL } from '~/lib/env';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
+import { preventBubbling } from '~/lib/utils';
+import { Link } from 'react-router';
 
 type TweetShareProps = {
   userId: string;
@@ -38,8 +38,8 @@ export function TweetShare({
           ? (): JSX.Element => (
               <span className='flex gap-2'>
                 Tweet added to your Bookmarks
-                <Link href='/bookmarks'>
-                  <a className='custom-underline font-bold'>View</a>
+                <Link to='/bookmarks' className='custom-underline font-bold'>
+                  View
                 </Link>
               </span>
             )

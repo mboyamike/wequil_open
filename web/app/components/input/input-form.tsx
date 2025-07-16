@@ -1,19 +1,20 @@
 import { useEffect } from 'react';
 import TextArea from 'react-textarea-autosize';
 import { motion } from 'framer-motion';
-import { useModal } from '@lib/hooks/useModal';
-import { Modal } from '@components/modal/modal';
-import { ActionModal } from '@components/modal/action-modal';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { Button } from '@components/ui/button';
 import type {
   ReactNode,
   RefObject,
   ChangeEvent,
   KeyboardEvent,
-  ClipboardEvent
+  ClipboardEvent,
+  JSX
 } from 'react';
 import type { Variants } from 'framer-motion';
+import { useModal } from '~/lib/hooks/useModal';
+import { Modal } from '../modal/modal';
+import { ActionModal } from '../modal/action-modal';
+import { HeroIcon } from '../ui/hero-icon';
+import { Button } from '../ui/button';
 
 type InputFormProps = {
   modal?: boolean;
@@ -22,7 +23,7 @@ type InputFormProps = {
   visited: boolean;
   reply?: boolean;
   children: ReactNode;
-  inputRef: RefObject<HTMLTextAreaElement>;
+  inputRef: RefObject<HTMLTextAreaElement | null>;
   inputValue: string;
   replyModal?: boolean;
   isValidTweet: boolean;
