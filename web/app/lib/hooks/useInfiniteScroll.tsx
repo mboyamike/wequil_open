@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type JSX } from 'react';
 import { motion } from 'framer-motion';
 import { query, limit } from 'firebase/firestore';
-import { getCollectionCount } from '@lib/firebase/utils';
-import { Loading } from '@components/ui/loading';
 import { useCollection } from './useCollection';
 import type { UseCollectionOptions } from './useCollection';
 import type { Query, QueryConstraint } from 'firebase/firestore';
-import type { User } from '@lib/types/user';
+import type { User } from '../types/user';
+import { getCollectionCount } from '../firebase/utils';
+import { Loading } from '~/components/ui/loading';
 
 type InfiniteScroll<T> = {
   data: T[] | null;

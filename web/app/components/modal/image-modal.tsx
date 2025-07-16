@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type JSX } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
-import { preventBubbling } from '@lib/utils';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { Loading } from '@components/ui/loading';
 import { backdrop, modal } from './modal';
 import type { VariantLabels } from 'framer-motion';
-import type { ImageData } from '@lib/types/file';
-import type { IconName } from '@components/ui/hero-icon';
+import { HeroIcon, type IconName } from '../ui/hero-icon';
+import { Button } from '@headlessui/react';
+import { preventBubbling } from '~/lib/utils';
+import { Loading } from '../ui/loading';
+import type { AppImageData } from '~/lib/types/file';
 
 type ImageModalProps = {
   tweet?: boolean;
-  imageData: ImageData;
+  imageData: AppImageData;
   previewCount: number;
   selectedIndex?: number;
   handleNextIndex?: (type: 'prev' | 'next') => () => void;
@@ -103,7 +102,7 @@ export function ImageModal({
           <motion.div
             className='mx-auto'
             {...backdrop}
-            exit={tweet ? (backdrop.exit as VariantLabels) : undefined}
+            exit={tweet ? (backdrop.exit as unknown as VariantLabels) : undefined}
             transition={{ duration: 0.15 }}
           >
             <Loading iconClassName='w-20 h-20' />

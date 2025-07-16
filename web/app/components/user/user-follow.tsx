@@ -1,11 +1,11 @@
 import { query, where } from 'firebase/firestore';
-import { useUser } from '@lib/context/user-context';
-import { useCollection } from '@lib/hooks/useCollection';
-import { usersCollection } from '@lib/firebase/collections';
-import { SEO } from '@components/common/seo';
-import { UserCards } from '@components/user/user-cards';
-import type { User } from '@lib/types/user';
-
+import { useUser } from '~/lib/context/user-context';
+import { usersCollection } from '~/lib/firebase/collections';
+import { useCollection } from '~/lib/hooks/useCollection';
+import type { User } from '~/lib/types/user';
+import { SEO } from '../common/seo';
+import { UserCards } from './user-cards';
+import type { JSX } from 'react';
 type UserFollowProps = {
   type: 'following' | 'followers';
 };
@@ -33,7 +33,12 @@ export function UserFollow({ type }: UserFollowProps): JSX.Element {
           type === 'following' ? 'followed by' : 'following'
         } ${name} (@${username}) / Twitter`}
       />
-      <UserCards follow data={data} type={type} loading={loading} />
+      <UserCards
+        follow
+        data={data ? data.map(doc => doc as User) : null}
+        type={type}
+        loading={loading}
+      />
     </>
   );
 }

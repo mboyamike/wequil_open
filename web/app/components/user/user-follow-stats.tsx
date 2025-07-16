@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { NumberStats } from '@components/tweet/number-stats';
-import type { User } from '@lib/types/user';
+import { useState, useEffect, useMemo, type JSX } from 'react';
+import type { User } from '~/lib/types/user';
+import { NumberStats } from '../tweet/number-stats';
+import { Link } from 'react-router';
 
 type UserFollowStatsProps = Pick<User, 'following' | 'followers'>;
 type Stats = [string, string, number, number];
@@ -56,18 +55,22 @@ export function UserFollowStats({
                  dark:[&>a>div]:text-dark-primary'
     >
       {allStats.map(([title, link, move, stats], index) => (
-        <Link href={link} key={title}>
-          <a
-            className='hover-animation mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b 
-                       border-b-transparent outline-none hover:border-b-light-primary 
-                       focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
-                       dark:focus-visible:border-b-dark-primary'
-          >
-            <NumberStats move={move} stats={stats} alwaysShowStats />
-            <p>{index === 1 && stats > 1 ? `${title}s` : title}</p>
-          </a>
+        <Link
+          to={link}
+          key={title}
+          className='hover-animation mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b 
+                     border-b-transparent outline-none hover:border-b-light-primary 
+                     focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
+                     dark:focus-visible:border-b-dark-primary'
+        >
+          <NumberStats move={move} stats={stats} alwaysShowStats />
+          <p>{index === 1 && stats > 1 ? `${title}s` : title}</p>
         </Link>
       ))}
     </div>
   );
 }
+function useRouter(): { query: { id: any; }; } {
+  throw new Error('Function not implemented.');
+}
+

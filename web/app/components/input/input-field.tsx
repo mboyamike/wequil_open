@@ -1,6 +1,7 @@
 import cn from 'clsx';
-import type { User, EditableData } from '@lib/types/user';
-import type { KeyboardEvent, ChangeEvent } from 'react';
+import type { User } from 'firebase/auth';
+import type { KeyboardEvent, ChangeEvent, JSX } from 'react';
+import type { EditableData } from '~/lib/types/user';
 
 export type InputFieldProps = {
   label: string;

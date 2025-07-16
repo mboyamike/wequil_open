@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, type JSX } from 'react';
 import cn from 'clsx';
-import { manageRetweet, manageLike } from '@lib/firebase/utils';
-import { ViewTweetStats } from '@components/view/view-tweet-stats';
 import { TweetOption } from './tweet-option';
 import { TweetShare } from './tweet-share';
-import type { Tweet } from '@lib/types/tweet';
+import type { Tweet } from '~/lib/types/tweet';
+import { ViewTweetStats } from '../view/view-tweet-stats';
+import { manageLike, manageRetweet } from '~/lib/firebase/utils';
 
 type TweetStatsProps = Pick<
   Tweet,

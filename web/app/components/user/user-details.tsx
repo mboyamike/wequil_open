@@ -1,11 +1,11 @@
-import { formatDate } from '@lib/date';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
 import { UserName } from './user-name';
 import { UserFollowing } from './user-following';
 import { UserFollowStats } from './user-follow-stats';
-import type { IconName } from '@components/ui/hero-icon';
-import type { User } from '@lib/types/user';
+import type { User } from '~/lib/types/user';
+import { HeroIcon, type IconName } from '../ui/hero-icon';
+import type { JSX } from 'react';
+import { formatDate } from '~/lib/date';
+import { ToolTip } from '../ui/tooltip';
 
 type UserDetailsProps = Pick<
   User,

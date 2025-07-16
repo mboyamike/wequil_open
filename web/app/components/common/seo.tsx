@@ -1,6 +1,7 @@
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { siteURL } from '@lib/env';
+import type { JSX } from 'react';
+import { useLocation } from 'react-router';
+import { Helmet } from 'react-helmet';
+
 
 type MainLayoutProps = {
   title: string;
@@ -8,15 +9,17 @@ type MainLayoutProps = {
   description?: string;
 };
 
+const siteURL = 'https://your-site-url.com';
+
 export function SEO({
   title,
   image,
   description
 }: MainLayoutProps): JSX.Element {
-  const { asPath } = useRouter();
+  const location = useLocation();
 
   return (
-    <Head>
+    <Helmet>
       <title>{title}</title>
       <meta name='og:title' content={title} />
       {description && <meta name='description' content={description} />}
@@ -24,8 +27,8 @@ export function SEO({
       {image && <meta property='og:image' content={image} />}
       <meta
         name='og:url'
-        content={`${siteURL}${asPath === '/' ? '' : asPath}`}
+        content={`${siteURL}${location.pathname === '/' ? '' : location.pathname}`}
       />
-    </Head>
+    </Helmet>
   );
 }

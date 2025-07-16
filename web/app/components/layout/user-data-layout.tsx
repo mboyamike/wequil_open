@@ -1,32 +1,32 @@
-import { useRouter } from 'next/router';
 import { query, where, limit } from 'firebase/firestore';
-import { UserContextProvider } from '@lib/context/user-context';
-import { useCollection } from '@lib/hooks/useCollection';
-import { usersCollection } from '@lib/firebase/collections';
-import { SEO } from '@components/common/seo';
-import { MainContainer } from '@components/home/main-container';
-import { MainHeader } from '@components/home/main-header';
-import { UserHeader } from '@components/user/user-header';
 import type { LayoutProps } from './common-layout';
+import type { JSX } from 'react';
+import { useCollection } from '~/lib/hooks/useCollection';
+import { usersCollection } from '~/lib/firebase/collections';
+import { UserContextProvider } from '~/lib/context/user-context';
+import { SEO } from '../common/seo';
+import { MainContainer } from '../home/main-container';
+import { MainHeader } from '../home/main-header';
+import { UserHeader } from '../user/user-header';
+import { useNavigate, useParams } from 'react-router';
+import type { User } from '~/lib/types/user';
 
 export function UserDataLayout({ children }: LayoutProps): JSX.Element {
-  const {
-    query: { id },
-    back
-  } = useRouter();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const { data, loading } = useCollection(
     query(usersCollection, where('username', '==', id), limit(1)),
     { allowNull: true }
   );
 
-  const user = data ? data[0] : null;
+  const user = data ? (data[0] as User) : null;
 
   return (
     <UserContextProvider value={{ user, loading }}>
       {!user && !loading && <SEO title='User not found / Twitter' />}
       <MainContainer>
-        <MainHeader useActionButton action={back}>
+        <MainHeader useActionButton action={() => navigate(-1)}>
           <UserHeader />
         </MainHeader>
         {children}

@@ -1,12 +1,12 @@
 import { useRef } from 'react';
 import cn from 'clsx';
-import { MainHeader } from '@components/home/main-header';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { NextImage } from '@components/ui/next-image';
-import { ToolTip } from '@components/ui/tooltip';
-import type { ReactNode, ChangeEvent } from 'react';
-import type { User } from '@lib/types/user';
+import type { ReactNode, ChangeEvent, JSX } from 'react';
+import type { User } from '~/lib/types/user';
+import { MainHeader } from '../home/main-header';
+import { Button } from '@headlessui/react';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
+import { NextImage } from '../ui/next-image';
 
 type EditProfileModalProps = Pick<
   User,
@@ -73,8 +73,8 @@ export function EditProfileModal({
                        dark:bg-light-border dark:text-light-primary dark:focus-visible:bg-light-border/90
                        dark:enabled:hover:bg-light-border/90 dark:enabled:active:bg-light-border/75'
             onClick={updateData}
-            disabled={!!inputNameError}
-            loading={loading}
+            disabled={!!inputNameError || loading}
+            // loading={loading}
           >
             Save
           </Button>
@@ -102,7 +102,7 @@ export function EditProfileModal({
                             group-focus-within:brightness-75'
               src={coverPhotoURL}
               alt={name}
-              layout='fill'
+              // layout='fill'
             />
           ) : (
             <div className='h-full bg-light-line-reply dark:bg-dark-line-reply' />
@@ -154,7 +154,7 @@ export function EditProfileModal({
                               group-focus-within:brightness-75'
                 src={photoURL}
                 alt={name}
-                layout='fill'
+                // layout='fill'
               />
               <Button
                 className='group/inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2

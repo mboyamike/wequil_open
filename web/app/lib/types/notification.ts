@@ -1,4 +1,4 @@
-import { FirestoreDataConverter, Timestamp } from "firebase/firestore";
+import { type FirestoreDataConverter, Timestamp } from "firebase/firestore";
 
 export interface NotificationData {
     id: string;

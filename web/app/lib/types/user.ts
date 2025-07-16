@@ -24,7 +24,7 @@ export type User = {
 
 export type EditableData = Extract<
   keyof User,
-  'bio' | 'name' | 'website' | 'photoURL' | 'location' | 'coverPhotoURL'
+  'bio' | 'name' | 'website' | 'photoURL' | 'location' | 'coverPhotoURL' | 'username'
 >;
 
 export type EditableUserData = Pick<User, EditableData>;

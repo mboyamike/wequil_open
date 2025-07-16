@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { doc } from 'firebase/firestore';
-import { useDocument } from '@lib/hooks/useDocument';
-import { tweetsCollection } from '@lib/firebase/collections';
-import { Tweet } from '@components/tweet/tweet';
-import type { RefObject } from 'react';
+import type { JSX, RefObject } from 'react';
+import { useDocument } from '~/lib/hooks/useDocument';
+import { tweetsCollection } from '~/lib/firebase/collections';
+import { Tweet } from '../tweet/tweet';
 
 type ViewParentTweetProps = {
   parentId: string;

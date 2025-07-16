@@ -1,12 +1,14 @@
-import { useModal } from '@lib/hooks/useModal';
-import { Button } from '@components/ui/button';
-import { NextImage } from '@components/ui/next-image';
-import { Modal } from '@components/modal/modal';
-import { ImageModal } from '@components/modal/image-modal';
-import type { ImageData } from '@lib/types/file';
+import { useModal } from "~/lib/hooks/useModal";
+import { Modal } from "../modal/modal";
+import type { JSX } from "react";
+import { ImageModal } from "../modal/image-modal";
+import { Button } from "@headlessui/react";
+import { NextImage } from "../ui/next-image";
+import type { AppImageData } from "~/lib/types/file";
+
 
 type UserHomeAvatarProps = {
-  profileData?: ImageData | null;
+  profileData?: AppImageData | null;
 };
 
 export function UserHomeAvatar({
@@ -19,7 +21,7 @@ export function UserHomeAvatar({
       <Modal open={open} closeModal={closeModal}>
         <ImageModal
           imageData={
-            { src: profileData?.src, alt: profileData?.alt } as ImageData
+            { src: profileData?.src, alt: profileData?.alt } as AppImageData
           }
           previewCount={1}
         />
@@ -39,7 +41,7 @@ export function UserHomeAvatar({
             imgClassName='rounded-full'
             src={profileData.src}
             alt={profileData.alt}
-            layout='fill'
+            // layout='fill'
             key={profileData.src}
           />
         ) : (

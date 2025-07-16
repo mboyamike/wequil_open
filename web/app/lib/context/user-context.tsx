@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
-import type { ReactNode } from 'react';
-import type { User } from '@lib/types/user';
+import type { JSX, ReactNode } from 'react';
+import type { User } from '../types/user';
 
 type UserContext = {
   user: User | null;

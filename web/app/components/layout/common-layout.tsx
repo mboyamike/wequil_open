@@ -3,6 +3,7 @@ import type { JSX, ReactNode } from 'react';
 import { Suggestions } from '../aside/suggestions';
 import { Aside } from '../aside/aside';
 import { Placeholder } from '../common/placeholder';
+import { useRequireAuth } from '~/lib/hooks/useRequireAuth';
 
 export type LayoutProps = {
   children: ReactNode;

@@ -1,6 +1,7 @@
-import Link from 'next/link';
 import cn from 'clsx';
-import { NextImage } from '@components/ui/next-image';
+import type { JSX } from 'react';
+import { NextImage } from '../ui/next-image';
+import { Link } from 'react-router';
 
 type UserAvatarProps = {
   src: string;
@@ -25,25 +26,24 @@ export function UserAvatar({
     : src;
 
   return (
-    <Link href={username ? `/user/${username}` : '#'}>
-      <a
-        className={cn(
-          'blur-picture flex self-start',
-          !username && 'pointer-events-none',
-          className
-        )}
-        tabIndex={username ? 0 : -1}
-      >
-        <NextImage
-          useSkeleton
-          imgClassName='rounded-full'
-          width={pictureSize}
-          height={pictureSize}
-          src={optimizedSrc}
-          alt={alt}
-          key={src}
-        />
-      </a>
+    <Link
+      to={username ? `/user/${username}` : '#'}
+      className={cn(
+        'blur-picture flex self-start',
+        !username && 'pointer-events-none',
+        className
+      )}
+      tabIndex={username ? 0 : -1}
+    >
+      <NextImage
+        useSkeleton
+        imgClassName='rounded-full'
+        width={pictureSize}
+        height={pictureSize}
+        src={optimizedSrc}
+        alt={alt}
+        key={src}
+      />
     </Link>
   );
 }

@@ -1,9 +1,9 @@
 import cn from 'clsx';
-import { preventBubbling } from '@lib/utils';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
 import { NumberStats } from './number-stats';
-import type { IconName } from '@components/ui/hero-icon';
+import { HeroIcon, type IconName } from '../ui/hero-icon';
+import type { JSX } from 'react';
+import { preventBubbling } from '~/lib/utils';
+import { ToolTip } from '../ui/tooltip';
 
 type TweetOption = {
   tip: string;

@@ -1,16 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
-import { useModal } from '@lib/hooks/useModal';
-import { preventBubbling } from '@lib/utils';
-import { ImageModal } from '@components/modal/image-modal';
-import { Modal } from '@components/modal/modal';
-import { NextImage } from '@components/ui/next-image';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
 import type { MotionProps } from 'framer-motion';
-import type { ImagesPreview, ImageData } from '@lib/types/file';
+import type { AppImageData, ImagesPreview } from '~/lib/types/file';
+import { useModal } from '~/lib/hooks/useModal';
+import { Modal } from '../modal/modal';
+import { ImageModal } from '../modal/image-modal';
+import { preventBubbling } from '~/lib/utils';
+import { Button } from '../ui/button';
+import { HeroIcon } from '../ui/hero-icon';
+import { NextImage } from '../ui/next-image';
+import { ToolTip } from '../ui/tooltip';
+
 
 type ImagePreviewProps = {
   tweet?: boolean;
@@ -56,7 +57,7 @@ export function ImagePreview({
   removeImage
 }: ImagePreviewProps): JSX.Element {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
+  const [selectedImage, setSelectedImage] = useState<AppImageData | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -115,10 +116,10 @@ export function ImagePreview({
       >
         <ImageModal
           tweet={isTweet}
-          imageData={selectedImage as ImageData}
+          imageData={selectedImage as AppImageData}
           previewCount={previewCount}
           selectedIndex={selectedIndex}
-          handleNextIndex={handleNextIndex}
+        handleNextIndex={handleNextIndex}
         />
       </Modal>
       <AnimatePresence mode='popLayout'>
@@ -179,7 +180,7 @@ export function ImagePreview({
                       : 'rounded-2xl'
                   )}
                   previewCount={previewCount}
-                  layout='fill'
+                  // layout='fill'
                   src={optimizedSrc}
                   alt={alt}
                   useSkeleton={isTweet}

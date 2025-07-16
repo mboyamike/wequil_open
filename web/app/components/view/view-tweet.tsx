@@ -1,23 +1,23 @@
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import cn from 'clsx';
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { Modal } from '@components/modal/modal';
-import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
-import { ImagePreview } from '@components/input/image-preview';
-import { UserAvatar } from '@components/user/user-avatar';
-import { UserTooltip } from '@components/user/user-tooltip';
-import { UserName } from '@components/user/user-name';
-import { UserUsername } from '@components/user/user-username';
-import { variants } from '@components/tweet/tweet';
-import { TweetActions } from '@components/tweet/tweet-actions';
-import { TweetStats } from '@components/tweet/tweet-stats';
-import { TweetDate } from '@components/tweet/tweet-date';
-import { Input } from '@components/input/input';
-import type { RefObject } from 'react';
-import type { User } from '@lib/types/user';
-import type { Tweet } from '@lib/types/tweet';
+import type { JSX, RefObject } from 'react';
+import type { Tweet } from '~/lib/types/tweet';
+import type { User } from '~/lib/types/user';
+import { useAuth } from '~/lib/context/auth-context';
+import { useModal } from '~/lib/hooks/useModal';
+import { variants } from '../aside/aside-trends';
+import { Modal } from '../modal/modal';
+import { TweetReplyModal } from '../modal/tweet-reply-modal';
+import { UserTooltip } from '../user/user-tooltip';
+import { UserAvatar } from '../user/user-avatar';
+import { UserUsername } from '../user/user-username';
+import { ImagePreview } from '../input/image-preview';
+import { TweetDate } from '../tweet/tweet-date';
+import { TweetStats } from '../tweet/tweet-stats';
+import { Input } from '../input/input';
+import { Link } from 'react-router';
+import { UserName } from '../user/user-name';
+import { TweetActions } from '../tweet/tweet-actions';
 
 type ViewTweetProps = Tweet & {
   user: User;
@@ -62,9 +62,13 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
          border-light-border px-4 py-3 outline-none dark:border-dark-border`,
         reply && 'scroll-m-[3.25rem] pt-0'
       )}
-      {...variants}
-      animate={{ ...variants.animate, transition: { duration: 0.2 } }}
-      exit={undefined}
+      initial={variants.initial}
+      animate={
+        variants.animate && typeof variants.animate === "object"
+          ? { ...variants.animate, transition: { duration: 0.2 } }
+          : { transition: { duration: 0.2 } }
+      }
+      exit={variants.exit}
       ref={viewTweetRef}
     >
       <Modal
@@ -117,10 +121,8 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       {reply && (
         <p className='text-light-secondary dark:text-dark-secondary'>
           Replying to{' '}
-          <Link href={`/user/${parentUsername}`}>
-            <a className='custom-underline text-main-accent'>
-              @{parentUsername}
-            </a>
+          <Link to={`/user/${parentUsername}`} className='custom-underline text-main-accent'>
+            @{parentUsername}
           </Link>
         </p>
       )}

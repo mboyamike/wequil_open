@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type JSX } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
-import { useTheme } from '@lib/context/theme-context';
+import { useTheme } from '~/lib/context/theme-context';
+import EmojiPicker, { Theme, type EmojiClickData } from 'emoji-picker-react';
+import { Button } from '../ui/button';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
 
 type EmojiPickerProps = {
   onEmojiSelect: (emoji: string) => void;

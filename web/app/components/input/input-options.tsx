@@ -1,13 +1,12 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
 import { variants } from './input';
 import { ProgressBar } from './progress-bar';
 import { EmojiPickerComponent } from './emoji-picker';
-import type { ChangeEvent, ClipboardEvent } from 'react';
-import type { IconName } from '@components/ui/hero-icon';
+import type { ChangeEvent, ClipboardEvent, JSX } from 'react';
+import { HeroIcon, type IconName } from '../ui/hero-icon';
+import { Button } from '../ui/button';
+import { ToolTip } from '../ui/tooltip';
 
 type Options = {
   name: string;

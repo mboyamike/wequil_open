@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import Image from 'next/image';
 import cn from 'clsx';
-import type { ReactNode } from 'react';
-import type { ImageProps } from 'next/image';
+import type { JSX, ReactNode } from 'react';
 
 type NextImageProps = {
   alt: string;
@@ -12,7 +10,7 @@ type NextImageProps = {
   imgClassName?: string;
   previewCount?: number;
   blurClassName?: string;
-} & ImageProps;
+} & React.ImgHTMLAttributes<HTMLImageElement>;
 
 /**
  *
@@ -38,7 +36,7 @@ export function NextImage({
 
   return (
     <figure style={{ width }} className={className}>
-      <Image
+      <img
         className={cn(
           imgClassName,
           loading
@@ -52,8 +50,7 @@ export function NextImage({
         width={width}
         height={height}
         alt={alt}
-        onLoadingComplete={handleLoad}
-        layout='responsive'
+        onLoad={handleLoad}
         {...rest}
       />
       {children}

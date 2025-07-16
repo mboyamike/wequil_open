@@ -1,10 +1,10 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, type JSX } from 'react';
 import { doc } from 'firebase/firestore';
-import { useDocument } from '@lib/hooks/useDocument';
-import { tweetsCollection } from '@lib/firebase/collections';
-import { getRandomId } from '@lib/random';
-import { Tweet } from './tweet';
 import type { LoadedParents } from './tweet-with-parent';
+import { getRandomId } from '~/lib/random';
+import { useDocument } from '~/lib/hooks/useDocument';
+import { tweetsCollection } from '~/lib/firebase/collections';
+import { Tweet } from './tweet';
 
 type TweetParentProps = {
   parentId: string;

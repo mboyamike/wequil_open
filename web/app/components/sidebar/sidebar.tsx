@@ -1,16 +1,15 @@
-import Link from 'next/link';
-import { useAuth } from '@lib/context/auth-context';
-import { useWindow } from '@lib/context/window-context';
-import { useModal } from '@lib/hooks/useModal';
-import { useRouter } from 'next/router';
-import { Modal } from '@components/modal/modal';
-import { Input } from '@components/input/input';
-import { CustomIcon } from '@components/ui/custom-icon';
-import { Button } from '@components/ui/button';
 import { SidebarLink } from './sidebar-link';
 import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
-import type { IconName } from '@components/ui/hero-icon';
+import type { IconName } from '../ui/hero-icon';
+import type { JSX } from 'react';
+import { useAuth } from '~/lib/context/auth-context';
+import { useWindow } from '~/lib/context/window-context';
+import { useLocation, Link } from 'react-router';
+import { useModal } from '~/lib/hooks/useModal';
+import { Modal } from '../modal/modal';
+import { Button, Input } from '@headlessui/react';
+import { CustomIcon } from '../ui/custom-icon';
 
 export type NavLink = {
   href: string;
@@ -49,14 +48,16 @@ const navLinks: Readonly<NavLink[]> = [
 export function Sidebar(): JSX.Element {
   const { user } = useAuth();
   const { isMobile } = useWindow();
-  const { pathname, query } = useRouter();
+  const location = useLocation();
 
   const { open, openModal, closeModal } = useModal();
 
   const username = user?.username as string;
 
   // Check if we're on messages page with a conversation selected
-  const isMessagesWithConversation = pathname === '/messages' && query.user;
+  const isMessagesWithConversation =
+    location.pathname === '/messages' &&
+    new URLSearchParams(location.search).has('user');
 
   return (
     <header
@@ -70,7 +71,7 @@ export function Sidebar(): JSX.Element {
         open={open}
         closeModal={closeModal}
       >
-        <Input modal closeModal={closeModal} />
+        <Input />
       </Modal>
       <div
         className='fixed bottom-0 z-10 flex w-full flex-col justify-between border-t border-light-border 
@@ -79,14 +80,10 @@ export function Sidebar(): JSX.Element {
       >
         <section className='flex flex-col justify-center gap-2 xs:items-center xl:items-stretch'>
           <h1 className='hidden xs:flex'>
-            <Link href='/home'>
-              <a
-                className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
+            <Link to='/home' className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
                            focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80
-                           dark:text-twitter-icon dark:hover:bg-dark-primary/10'
-              >
-                <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
-              </a>
+                           dark:text-twitter-icon dark:hover:bg-dark-primary/10'>
+              <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
             </Link>
           </h1>
           <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>

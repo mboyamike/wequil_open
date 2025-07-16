@@ -1,6 +1,6 @@
-import { Input } from '@components/input/input';
-import { Tweet } from '@components/tweet/tweet';
-import type { TweetProps } from '@components/tweet/tweet';
+import type { JSX } from "react";
+import { Tweet, type TweetProps } from "../tweet/tweet";
+import { Input } from "../input/input";
 
 type TweetReplyModalProps = {
   tweet: TweetProps;

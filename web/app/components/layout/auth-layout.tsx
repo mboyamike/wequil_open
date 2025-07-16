@@ -2,6 +2,7 @@ import { useState, useEffect, type JSX } from 'react';
 import type { LayoutProps } from './common-layout';
 import { Placeholder } from '../common/placeholder';
 import { useNavigate } from 'react-router';
+import { useAuth } from '~/lib/context/auth-context';
 
 export function AuthLayout({ children }: LayoutProps): JSX.Element {
   const [pending, setPending] = useState(true);
