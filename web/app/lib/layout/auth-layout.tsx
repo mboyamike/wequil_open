@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { LayoutProps } from './common-layout';
 import { useAuth } from '../context/auth-context';
-import { useNavigate } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { Placeholder } from '~/components/common/placeholder';
 
 export default function AuthLayout({ children }: LayoutProps) {
@@ -31,5 +31,5 @@ export default function AuthLayout({ children }: LayoutProps) {
 
   if (loading || pending) return <Placeholder />;
 
-  return <>{children}</>;
+  return <><Outlet /></>;
 }
