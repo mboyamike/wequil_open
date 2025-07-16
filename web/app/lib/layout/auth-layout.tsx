@@ -1,13 +1,14 @@
-import { useState, useEffect, type JSX } from 'react';
+import { useState, useEffect } from 'react';
 import type { LayoutProps } from './common-layout';
-import { Placeholder } from '../common/placeholder';
+import { useAuth } from '../context/auth-context';
 import { useNavigate } from 'react-router';
-import { useAuth } from '~/lib/context/auth-context';
+import { Placeholder } from '~/components/common/placeholder';
 
-export function AuthLayout({ children }: LayoutProps): JSX.Element {
+export default function AuthLayout({ children }: LayoutProps) {
   const [pending, setPending] = useState(true);
 
   const { user, loading } = useAuth();
+  // const { replace } = useRouter();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,14 +16,11 @@ export function AuthLayout({ children }: LayoutProps): JSX.Element {
       setPending(true);
 
       if (user) {
-        void navigate(
-          '/home',
-          {
-            replace: true,
-          },
-        );
+        // await sleep(500);
+        navigate('/home', { replace: true });
+        
       } else if (!loading) {
-
+        // await sleep(500);
         setPending(false);
       }
     };
