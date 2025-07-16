@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 const footerLinks = [
   ['Terms of Service', 'https://twitter.com/tos'],
   ['Privacy Policy', 'https://twitter.com/privacy'],
