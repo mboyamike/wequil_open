@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, type JSX } from 'react';
 import cn from 'clsx';
+import { CustomIcon } from '../ui/custom-icon';
+import { Button } from '../ui/button';
 import { Dialog } from '@headlessui/react';
-import { Button } from '@components/ui/button';
-import { CustomIcon } from '@components/ui/custom-icon';
 
 type ActionModalProps = {
   title: string;

@@ -1,31 +1,22 @@
-import { useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { useMemo, type JSX } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { Popover } from '@headlessui/react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { Button, Popover } from '@headlessui/react';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { tweetsCollection } from '@lib/firebase/collections';
-import {
-  removeTweet,
-  manageReply,
-  manageFollow,
-  managePinnedTweet,
-  manageTotalTweets,
-  manageTotalPhotos
-} from '@lib/firebase/utils';
-import { delayScroll, preventBubbling, sleep } from '@lib/utils';
-import { Modal } from '@components/modal/modal';
-import { ActionModal } from '@components/modal/action-modal';
-import { Button } from '@components/ui/button';
-import { ToolTip } from '@components/ui/tooltip';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { CustomIcon } from '@components/ui/custom-icon';
-import type { Variants } from 'framer-motion';
-import type { Tweet } from '@lib/types/tweet';
-import type { User } from '@lib/types/user';
+import type { Tweet } from '~/lib/types/tweet';
+import { useAuth } from '~/lib/context/auth-context';
+import { useNavigate } from 'react-router';
+import { useModal } from '~/lib/hooks/useModal';
+import type { User } from '~/lib/types/user';
+import { tweetsCollection } from '~/lib/firebase/collections';
+import { delayScroll, preventBubbling, sleep } from '~/lib/utils';
+import { manageFollow, managePinnedTweet, manageReply, manageTotalPhotos, manageTotalTweets, removeTweet } from '~/lib/firebase/utils';
+import { Modal } from '../modal/modal';
+import { ActionModal } from '../modal/action-modal';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
+import { CustomIcon } from '../ui/custom-icon';
 
 export const variants: Variants = {
   initial: { opacity: 0, y: -25 },
@@ -75,7 +66,7 @@ export function TweetActions({
   createdBy
 }: TweetActionsProps): JSX.Element {
   const { user, isAdmin } = useAuth();
-  const { push } = useRouter();
+  const navigate = useNavigate();
 
   const {
     open: removeOpen,
@@ -99,11 +90,11 @@ export function TweetActions({
       if (parentId) {
         const parentSnapshot = await getDoc(doc(tweetsCollection, parentId));
         if (parentSnapshot.exists()) {
-          await push(`/tweet/${parentId}`, undefined, { scroll: false });
+          await navigate(`/tweet/${parentId}`, { replace: false });
           delayScroll(200)();
           await sleep(50);
-        } else await push('/home');
-      } else await push('/home');
+        } else await navigate('/home', { replace: false });
+      } else await navigate('/home', { replace: false });
 
     await Promise.all([
       removeTweet(tweetId),

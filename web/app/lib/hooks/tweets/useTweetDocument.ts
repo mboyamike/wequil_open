@@ -1,6 +1,6 @@
-import { useDocument } from '@lib/hooks/useDocument';
-import { tweetDocumentQuery } from '@lib/firebase/queries/tweets_queries';
-import type { TweetDocumentOptions, TweetWithUser } from '@lib/types/tweet';
+import { tweetDocumentQuery } from "~/lib/firebase/queries/tweets_queries";
+import type { TweetDocumentOptions, TweetWithUser } from "~/lib/types/tweet";
+import { useDocument } from "../useDocument";
 
 export function useTweetDocument(
   tweetId: string,

@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { CustomIcon } from '@components/ui/custom-icon';
-import { fromTop } from '@components/input/input-form';
-import type { ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
+import { fromTop } from '../input/input-form';
+import { CustomIcon } from '../ui/custom-icon';
+import { HeroIcon } from '../ui/hero-icon';
 
 type TweetStatusProps = {
   type: 'pin' | 'tweet';

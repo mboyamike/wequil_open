@@ -1,9 +1,11 @@
-import { UserAvatar } from '@components/user/user-avatar';
-import { UserName } from '@components/user/user-name';
-import { InputThemeRadio } from '@components/input/input-theme-radio';
-import { Button } from '@components/ui/button';
-import { InputAccentRadio } from '@components/input/input-accent-radio';
-import type { Theme, Accent } from '@lib/types/theme';
+import type { JSX } from "react";
+import type { Accent, Theme } from "~/lib/types/theme";
+import { UserAvatar } from "../user/user-avatar";
+import { UserName } from "../user/user-name";
+import { InputThemeRadio } from "../input/input-theme-radio";
+import { Button } from "@headlessui/react";
+import { InputAccentRadio } from "../input/input-accent-radio";
+
 
 type DisplayModalProps = {
   closeModal: () => void;

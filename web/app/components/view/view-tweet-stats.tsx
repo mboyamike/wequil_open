@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 import cn from 'clsx';
-import { useArrayDocument } from '@lib/hooks/useArrayDocument';
-import { useModal } from '@lib/hooks/useModal';
-import { usersCollection } from '@lib/firebase/collections';
-import { Modal } from '@components/modal/modal';
-import { TweetStatsModal } from '@components/modal/tweet-stats-modal';
-import { NumberStats } from '@components/tweet/number-stats';
-import { UserCards } from '@components/user/user-cards';
-import type { Tweet } from '@lib/types/tweet';
+import type { Tweet } from '~/lib/types/tweet';
+import { useModal } from '~/lib/hooks/useModal';
+import { useArrayDocument } from '~/lib/hooks/useArrayDocument';
+import { usersCollection } from '~/lib/firebase/collections';
+import { Modal } from '../modal/modal';
+import { TweetStatsModal } from '../modal/tweet-stats-modal';
+import { UserCards } from '../user/user-cards';
+import { NumberStats } from '../tweet/number-stats';
 
 type viewTweetStats = Pick<Tweet, 'userRetweets' | 'userLikes'> & {
   likeMove: number;
@@ -72,7 +72,7 @@ export function ViewTweetStats({
           <UserCards
             follow
             type={statsType as StatsType}
-            data={data}
+            data={data?.map(d => d.user) ?? []}
             loading={loading}
           />
         </TweetStatsModal>

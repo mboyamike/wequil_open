@@ -1,5 +1,6 @@
-import { useMessaging } from '@lib/context/messaging-context';
-import { Button } from '@components/ui/button';
+import type { JSX } from 'react';
+import { Button } from '../ui/button';
+import { useMessaging } from '~/lib/context/messaging-context';
 
 export function NotificationPermission(): JSX.Element {
   const { isPermissionGranted, requestPermission } = useMessaging();

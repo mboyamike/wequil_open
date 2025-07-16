@@ -1,12 +1,13 @@
-import { useRouter } from 'next/router';
 import { doc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useDocument } from '@lib/hooks/useDocument';
-import { useUser } from '@lib/context/user-context';
-import { isPlural } from '@lib/utils';
-import { userStatsCollection } from '@lib/firebase/collections';
 import { UserName } from './user-name';
 import type { Variants } from 'framer-motion';
+import type { JSX } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
+import { useUser } from '~/lib/context/user-context';
+import { userStatsCollection } from '~/lib/firebase/collections';
+import { useDocument } from '~/lib/hooks/useDocument';
+import { isPlural } from '~/lib/utils';
 
 export const variants: Variants = {
   initial: { opacity: 0 },
@@ -15,10 +16,8 @@ export const variants: Variants = {
 };
 
 export function UserHeader(): JSX.Element {
-  const {
-    pathname,
-    query: { id }
-  } = useRouter();
+  const { pathname } = useLocation();
+  const { id } = useParams();
 
   const { user, loading } = useUser();
 

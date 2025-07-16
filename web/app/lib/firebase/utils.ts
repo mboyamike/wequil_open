@@ -26,12 +26,13 @@ import {
   conversationCollection
 } from './collections';
 import type { WithFieldValue, Query } from 'firebase/firestore';
-import type { EditableUserData } from '@lib/types/user';
-import type { FilesWithId, ImagesPreview } from '@lib/types/file';
-import type { Bookmark } from '@lib/types/bookmark';
-import type { Theme, Accent } from '@lib/types/theme';
-import { Message, MessageInput } from '@lib/types/message';
-import { Conversation } from '@lib/types/conversation';
+import type { EditableUserData } from '../types/user';
+import type { Theme } from 'emoji-picker-react';
+import type { Accent } from '../types/theme';
+import type { FilesWithId, ImagesPreview } from '../types/file';
+import type { Bookmark } from '../types/bookmark';
+import type { Message, MessageInput } from '../types/message';
+import type { Conversation } from '../types/conversation';
 
 export async function checkUsernameAvailability(
   username: string

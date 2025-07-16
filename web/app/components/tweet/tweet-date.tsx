@@ -1,8 +1,9 @@
-import Link from 'next/link';
 import cn from 'clsx';
-import { formatDate } from '@lib/date';
-import { ToolTip } from '@components/ui/tooltip';
-import type { Tweet } from '@lib/types/tweet';
+import type { JSX } from 'react';
+import { Link } from 'react-router';
+import { formatDate } from '~/lib/date';
+import type { Tweet } from '~/lib/types/tweet';
+import { ToolTip } from '../ui/tooltip';
 
 type TweetDateProps = Pick<Tweet, 'createdAt'> & {
   tweetLink: string;
@@ -18,15 +19,14 @@ export function TweetDate({
     <div className={cn('flex gap-1', viewTweet && 'py-4')}>
       {!viewTweet && <i>·</i>}
       <div className='group relative'>
-        <Link href={tweetLink}>
-          <a
-            className={cn(
-              'custom-underline peer whitespace-nowrap',
-              viewTweet && 'text-light-secondary dark:text-dark-secondary'
-            )}
-          >
-            {formatDate(createdAt, viewTweet ? 'full' : 'tweet')}
-          </a>
+        <Link
+          to={tweetLink}
+          className={cn(
+            'custom-underline peer whitespace-nowrap',
+            viewTweet && 'text-light-secondary dark:text-dark-secondary'
+          )}
+        >
+          {formatDate(createdAt, viewTweet ? 'full' : 'tweet')}
         </Link>
         <ToolTip
           className='translate-y-1 peer-focus:opacity-100 peer-focus-visible:visible

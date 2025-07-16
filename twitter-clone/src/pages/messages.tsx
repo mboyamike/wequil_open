@@ -42,7 +42,7 @@ import { useWindow } from '@lib/context/window-context';
 
 
 export default function Messages(): JSX.Element {
-  const { back, query: routerQuery } = useRouter();
+  const { back, push, query: routerQuery } = useRouter();
   const { user } = useAuth();
   const [targetUser, setTargetUser] = useState<User | null>(null);
   const [userCache, setUserCache] = useState<Record<string, User>>({});
@@ -301,7 +301,7 @@ export default function Messages(): JSX.Element {
       return (
         <div className='flex w-full h-screen'>
           <MainContainer className='w-full flex flex-col min-h-screen'>
-            <MainHeader useActionButton title='Messages' action={back}>
+            <MainHeader useActionButton title='Messages' action={() => push('/home')}>
               <Button
                 className='dark-bg-tab group relative p-2 hover:bg-light-primary/10 active:bg-light-primary/20 
                            dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20 ml-auto'
@@ -516,7 +516,7 @@ export default function Messages(): JSX.Element {
       <div className='flex'>
         {/* Left: Conversations List */}
         <MainContainer className='flex min-h-screen flex-col border-r border-light-border dark:border-dark-border'>
-          <MainHeader useActionButton title='Messages' action={back}>
+          <MainHeader useActionButton title='Messages' action={() => push('/home')}>
             <Button
               className='dark-bg-tab group relative ml-auto p-2 hover:bg-light-primary/10 
                          active:bg-light-primary/20 dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { HeroIcon } from './hero-icon';
 
 type ErrorProps = {

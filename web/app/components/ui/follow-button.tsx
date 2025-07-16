@@ -1,10 +1,12 @@
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { manageFollow } from '@lib/firebase/utils';
-import { preventBubbling } from '@lib/utils';
-import { Modal } from '@components/modal/modal';
-import { ActionModal } from '@components/modal/action-modal';
-import { Button } from '@components/ui/button';
+import type { JSX } from "react";
+import { useAuth } from "~/lib/context/auth-context";
+import { manageFollow } from "~/lib/firebase/utils";
+import { useModal } from "~/lib/hooks/useModal";
+import { Modal } from "../modal/modal";
+import { ActionModal } from "../modal/action-modal";
+import { Button } from "./button";
+import { preventBubbling } from "~/lib/utils";
+
 
 type FollowButtonProps = {
   userTargetId: string;

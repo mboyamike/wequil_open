@@ -1,6 +1,6 @@
-import { MainHeader } from '@components/home/main-header';
-import type { ReactNode } from 'react';
-import type { StatsType } from '@components/view/view-tweet-stats';
+import type { JSX, ReactNode } from 'react';
+import type { StatsType } from '../view/view-tweet-stats';
+import { MainHeader } from '../home/main-header';
 
 type TweetStatsModalProps = {
   children: ReactNode;

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getDoc, doc, onSnapshot } from 'firebase/firestore';
-import { usersCollection } from '@lib/firebase/collections';
 import { useCacheQuery } from './useCacheQuery';
 import type { Query } from 'firebase/firestore';
-import type { User } from '@lib/types/user';
+import type { User } from '../types/user';
+import { usersCollection } from '../firebase/collections';
 
 type UseCollection<T> = {
   data: T[] | null;

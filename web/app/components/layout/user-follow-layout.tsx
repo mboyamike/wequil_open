@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
-import { useUser } from '@lib/context/user-context';
-import { Loading } from '@components/ui/loading';
-import { UserNav } from '@components/user/user-nav';
-import { variants } from '@components/user/user-header';
 import type { LayoutProps } from './common-layout';
+import { useUser } from '~/lib/context/user-context';
+import type { JSX } from 'react';
+import { variants } from '../aside/aside-trends';
+import { Loading } from '../ui/loading';
+import { UserNav } from '../user/user-nav';
 
 export function UserFollowLayout({ children }: LayoutProps): JSX.Element {
   const { user: userData, loading } = useUser();

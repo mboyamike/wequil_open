@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { useState, useEffect, createContext, useContext } from 'react';
-import { updateUserTheme } from '@lib/firebase/utils';
 import { useAuth } from './auth-context';
-import type { ReactNode, ChangeEvent } from 'react';
-import type { Theme, Accent } from '@lib/types/theme';
+import type { ReactNode, ChangeEvent, JSX } from 'react';
+import type { Accent, Theme } from '../types/theme';
+import { updateUserTheme } from '../firebase/utils';
 
 type ThemeContext = {
   theme: Theme;
@@ -75,7 +75,13 @@ export function ThemeContextProvider({
 
       if (user) {
         localStorage.setItem('theme', theme);
-        return setTimeout(() => void updateUserTheme(user.id, { theme }), 500);
+        return setTimeout(
+          () => void updateUserTheme(
+            user.id,
+            { theme: theme as import('emoji-picker-react').Theme }
+          ),
+          500
+        );
       }
 
       return undefined;

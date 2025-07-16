@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { checkUsernameAvailability, updateUsername } from '@lib/firebase/utils';
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { isValidUsername } from '@lib/validation';
-import { sleep } from '@lib/utils';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
-import { Modal } from '@components/modal/modal';
-import { UsernameModal } from '@components/modal/username-modal';
-import { InputField } from '@components/input/input-field';
-import type { FormEvent, ChangeEvent } from 'react';
+import type { FormEvent, ChangeEvent, JSX } from 'react';
+import { useModal } from '~/lib/hooks/useModal';
+import { useAuth } from '~/lib/context/auth-context';
+import { checkUsernameAvailability, updateUsername } from '~/lib/firebase/utils';
+import { isValidUsername } from '~/lib/validation';
+import { sleep } from '~/lib/utils';
+import { Modal } from '../modal/modal';
+import { UsernameModal } from '../modal/username-modal';
+import { InputField } from '../input/input-field';
+import { Button } from '../ui/button';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
 
 export function UpdateUsername(): JSX.Element {
   const [alreadySet, setAlreadySet] = useState(false);

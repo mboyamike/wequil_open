@@ -1,6 +1,6 @@
-import { useCollection } from '@lib/hooks/useCollection';
-import { tweetRepliesQuery } from '@lib/firebase/queries/tweets_queries';
-import type { TweetWithUser } from '@lib/types/tweet';
+import { tweetRepliesQuery } from "~/lib/firebase/queries/tweets_queries";
+import type { TweetWithUser } from "~/lib/types/tweet";
+import { useCollection } from "../useCollection";
 
 type UseTweetRepliesOptions = {
   includeUser?: boolean;

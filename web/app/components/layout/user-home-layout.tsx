@@ -1,36 +1,36 @@
-import router, { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { useAuth } from '@lib/context/auth-context';
-import { useUser } from '@lib/context/user-context';
-import { SEO } from '@components/common/seo';
-import { UserHomeCover } from '@components/user/user-home-cover';
-import { UserHomeAvatar } from '@components/user/user-home-avatar';
-import { UserDetails } from '@components/user/user-details';
-import { UserNav } from '@components/user/user-nav';
-import { Button } from '@components/ui/button';
-import { Loading } from '@components/ui/loading';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
-import { FollowButton } from '@components/ui/follow-button';
-import { variants } from '@components/user/user-header';
-import { UserEditProfile } from '@components/user/user-edit-profile';
-import { UserShare } from '@components/user/user-share';
 import type { LayoutProps } from './common-layout';
+import type { JSX } from 'react';
+import { useAuth } from '~/lib/context/auth-context';
+import { useUser } from '~/lib/context/user-context';
+import { SEO } from '../common/seo';
+import { variants } from '../aside/aside-trends';
+import { Loading } from '../ui/loading';
+import { UserHomeCover } from '../user/user-home-cover';
+import { UserHomeAvatar } from '../user/user-home-avatar';
+import { Button } from '../ui/button';
+import { FollowButton } from '../ui/follow-button';
+import { HeroIcon } from '../ui/hero-icon';
+import { ToolTip } from '../ui/tooltip';
+import { UserDetails } from '../user/user-details';
+import { UserEditProfile } from '../user/user-edit-profile';
+import { UserNav } from '../user/user-nav';
+import { UserShare } from '../user/user-share';
+import { useNavigate, useParams } from 'react-router';
 
 export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
   const { user, isAdmin } = useAuth();
   const { user: userData, loading } = useUser();
 
-  const {
-    query: { id }
-  } = useRouter();
+  // --- React Router: get id from params and navigation function ---
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const handleMessageClick = () => {
     if (userData?.id) {
-      router.push(`/messages?user=${userData.id}`);
+      navigate(`/messages?user=${userData.id}`);
     }
   };
-
 
   const coverData = userData?.coverPhotoURL
     ? { src: userData.coverPhotoURL, alt: userData.name }

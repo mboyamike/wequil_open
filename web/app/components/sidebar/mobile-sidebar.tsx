@@ -1,11 +1,12 @@
-import { useAuth } from '@lib/context/auth-context';
-import { useModal } from '@lib/hooks/useModal';
-import { Button } from '@components/ui/button';
-import { Modal } from '@components/modal/modal';
-import { MobileSidebarModal } from '@components/modal/mobile-sidebar-modal';
-import { UserAvatar } from '@components/user/user-avatar';
 import type { Variants } from 'framer-motion';
-import type { User } from '@lib/types/user';
+import type { JSX } from 'react';
+import { useAuth } from '~/lib/context/auth-context';
+import { useModal } from '~/lib/hooks/useModal';
+import type { User } from '~/lib/types/user';
+import { Modal } from '../modal/modal';
+import { MobileSidebarModal } from '../modal/mobile-sidebar-modal';
+import { Button } from '@headlessui/react';
+import { UserAvatar } from '../user/user-avatar';
 
 const variant: Variants = {
   initial: { x: '-100%', opacity: 0.8 },

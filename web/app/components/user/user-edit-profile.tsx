@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import cn from 'clsx';
-import { useUser } from '@lib/context/user-context';
-import { useModal } from '@lib/hooks/useModal';
-import { updateUserData, uploadImages } from '@lib/firebase/utils';
-import { sleep } from '@lib/utils';
-import { getImagesData } from '@lib/validation';
-import { Modal } from '@components/modal/modal';
-import { EditProfileModal } from '@components/modal/edit-profile-modal';
-import { Button } from '@components/ui/button';
-import { InputField } from '@components/input/input-field';
-import type { ChangeEvent, KeyboardEvent } from 'react';
-import type { FilesWithId } from '@lib/types/file';
-import type { User, EditableData, EditableUserData } from '@lib/types/user';
-import type { InputFieldProps } from '@components/input/input-field';
+import type { ChangeEvent, JSX, KeyboardEvent } from 'react';
+import { InputField, type InputFieldProps } from '../input/input-field';
+import type { EditableData, EditableUserData, User } from '~/lib/types/user';
+import type { FilesWithId } from '~/lib/types/file';
+import { useUser } from '~/lib/context/user-context';
+import { useModal } from '~/lib/hooks/useModal';
+import { updateUserData, uploadImages } from '~/lib/firebase/utils';
+import { sleep } from '~/lib/utils';
+import { getImagesData } from '~/lib/validation';
+import { EditProfileModal } from '../modal/edit-profile-modal';
+import { Modal } from '../modal/modal';
+import { Button } from '@headlessui/react';
 
 type RequiredInputFieldProps = Omit<InputFieldProps, 'handleChange'> & {
   inputId: EditableData;
@@ -33,14 +32,15 @@ type UserEditProfileProps = {
   hide?: boolean;
 };
 
-export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
+export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element | null {
   const { user } = useUser();
   const { open, openModal, closeModal } = useModal();
 
+  if (!user) return null; // or a loading spinner
+
   const [loading, setLoading] = useState(false);
 
-  const { bio, name, website, location, photoURL, coverPhotoURL } =
-    user as User;
+  const { bio, name, website, location, photoURL, coverPhotoURL } = user;
 
   const [editUserData, setEditUserData] = useState<EditableUserData>({
     bio,
@@ -48,7 +48,8 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
     website,
     photoURL,
     location,
-    coverPhotoURL
+    coverPhotoURL,
+    username: user.username,
   });
 
   const [userImages, setUserImages] = useState<UserImages>({
@@ -177,7 +178,8 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
       website,
       photoURL,
       location,
-      coverPhotoURL
+      coverPhotoURL,
+      username: user.username
     });
 
   const handleChange =
@@ -193,7 +195,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
     ctrlKey
   }: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     if (ctrlKey && key === 'Enter' && !inputNameError) {
-      target.blur();
+      (target as HTMLInputElement | HTMLTextAreaElement).blur();
       void updateData();
     }
   };
@@ -267,3 +269,4 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
     </form>
   );
 }
+

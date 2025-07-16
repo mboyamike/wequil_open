@@ -1,11 +1,12 @@
 import cn from 'clsx';
-import { NextImage } from '@components/ui/next-image';
-import type { ImageData } from '@lib/types/file';
+import type { JSX } from 'react';
+import { NextImage } from '../ui/next-image';
+import type { AppImageData } from '~/lib/types/file';
 
 export type StatsEmptyProps = {
   title: string;
   modal?: boolean;
-  imageData?: ImageData;
+  imageData?: AppImageData;
   description: string;
 };
 

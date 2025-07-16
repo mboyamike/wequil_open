@@ -1,12 +1,14 @@
-import { useModal } from '@lib/hooks/useModal';
-import { Button } from '@components/ui/button';
-import { NextImage } from '@components/ui/next-image';
-import { Modal } from '@components/modal/modal';
-import { ImageModal } from '@components/modal/image-modal';
-import type { ImageData } from '@lib/types/file';
+import type { JSX } from "react";
+import { useModal } from "~/lib/hooks/useModal";
+import { Modal } from "../modal/modal";
+import { ImageModal } from "../modal/image-modal";
+import { Button } from "@headlessui/react";
+import { NextImage } from "../ui/next-image";
+import type { AppImageData } from "~/lib/types/file";
+
 
 type UserHomeCoverProps = {
-  coverData?: ImageData | null;
+  coverData?: AppImageData | null;
 };
 
 export function UserHomeCover({ coverData }: UserHomeCoverProps): JSX.Element {
@@ -15,7 +17,7 @@ export function UserHomeCover({ coverData }: UserHomeCoverProps): JSX.Element {
   return (
     <div className='mt-0.5 h-36 xs:h-48 sm:h-52'>
       <Modal open={open} closeModal={closeModal}>
-        <ImageModal imageData={coverData as ImageData} previewCount={1} />
+        <ImageModal imageData={coverData as AppImageData} previewCount={1} />
       </Modal>
       {coverData ? (
         <Button
@@ -24,7 +26,7 @@ export function UserHomeCover({ coverData }: UserHomeCoverProps): JSX.Element {
         >
           <NextImage
             useSkeleton
-            layout='fill'
+            // layout='fill'
             imgClassName='object-cover'
             src={coverData.src}
             alt={coverData.alt}
