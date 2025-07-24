@@ -3,10 +3,10 @@ import type { JSX, ReactElement, ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { MainContainer } from "~/components/home/main-container";
 import { MainHeader } from "~/components/home/main-header";
-import { ProtectedLayout, NotificationsLayout } from "~/components/layout/common-layout";
-import { MainLayout } from "~/components/layout/main-layout";
 import { StatsEmpty } from "~/components/tweet/stats-empty";
 import { Loading } from "~/components/ui/loading";
+import { NotificationsLayout, ProtectedLayout } from "~/layouts/common-layout";
+import { MainLayout } from "~/layouts/main-layout";
 import { useAuth } from "~/lib/context/auth-context";
 import { notificationsCollection } from "~/lib/firebase/collections";
 import { useCollection } from "~/lib/hooks/useCollection";
@@ -41,7 +41,7 @@ export default function Notifications(): JSX.Element {
 
   return (
     <MainContainer>
-      <MainHeader useActionButton title='Notifications' action={navigate(-1)} />
+      <MainHeader useActionButton title='Notifications' action={() => navigate(-1)} />
       {!user?.id ? (
         <div className='flex justify-center py-10'>
           <Loading className='h-8 w-8' />

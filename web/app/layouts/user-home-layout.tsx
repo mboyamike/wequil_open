@@ -1,33 +1,32 @@
-import router, { useRouter } from 'next/router';
+import { Button } from '@headlessui/react';
 import { motion } from 'framer-motion';
-import { useAuth } from '@lib/context/auth-context';
-import { useUser } from '@lib/context/user-context';
-import { SEO } from '@components/common/seo';
-import { UserHomeCover } from '@components/user/user-home-cover';
-import { UserHomeAvatar } from '@components/user/user-home-avatar';
-import { UserDetails } from '@components/user/user-details';
-import { UserNav } from '@components/user/user-nav';
-import { Button } from '@components/ui/button';
-import { Loading } from '@components/ui/loading';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
-import { FollowButton } from '@components/ui/follow-button';
-import { variants } from '@components/user/user-header';
-import { UserEditProfile } from '@components/user/user-edit-profile';
-import { UserShare } from '@components/user/user-share';
-import type { LayoutProps } from './common-layout';
+import { Outlet, useNavigate, useSearchParams } from 'react-router';
+import { variants } from '~/components/aside/aside-trends';
+import { SEO } from '~/components/common/seo';
+import { FollowButton } from '~/components/ui/follow-button';
+import { HeroIcon } from '~/components/ui/hero-icon';
+import { Loading } from '~/components/ui/loading';
+import { ToolTip } from '~/components/ui/tooltip';
+import { UserDetails } from '~/components/user/user-details';
+import { UserEditProfile } from '~/components/user/user-edit-profile';
+import { UserHomeAvatar } from '~/components/user/user-home-avatar';
+import { UserHomeCover } from '~/components/user/user-home-cover';
+import { UserNav } from '~/components/user/user-nav';
+import { UserShare } from '~/components/user/user-share';
+import { useAuth } from '~/lib/context/auth-context';
+import { useUser } from '~/lib/context/user-context';
 
-export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
+export function UserHomeLayout() {
   const { user, isAdmin } = useAuth();
   const { user: userData, loading } = useUser();
 
-  const {
-    query: { id }
-  } = useRouter();
+  const [ searchParams ] = useSearchParams();
+  const navigate = useNavigate();
+  const id = searchParams.get('id');
 
   const handleMessageClick = () => {
     if (userData?.id) {
-      router.push(`/messages?user=${userData.id}`);
+      navigate(`/messages?user=${userData.id}`);
     }
   };
 
@@ -107,7 +106,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
       {userData && (
         <>
           <UserNav />
-          {children}
+          <Outlet />
         </>
       )}
     </>

@@ -7,8 +7,6 @@ import { variants } from '~/components/aside/aside-trends';
 import { SEO } from '~/components/common/seo';
 import { MainContainer } from '~/components/home/main-container';
 import { MainHeader } from '~/components/home/main-header';
-import { ProtectedLayout, PeopleLayout } from '~/components/layout/common-layout';
-import { MainLayout } from '~/components/layout/main-layout';
 import { Loading } from '~/components/ui/loading';
 import { UserCard } from '~/components/user/user-card';
 import { useAuth } from '~/lib/context/auth-context';
@@ -16,6 +14,8 @@ import { usersCollection } from '~/lib/firebase/collections';
 import { useInfiniteScroll } from '~/lib/hooks/useInfiniteScroll';
 import { useNavigate } from 'react-router';
 import { Error } from '~/components/ui/error';
+import { PeopleLayout, ProtectedLayout } from '~/layouts/common-layout';
+import { MainLayout } from '~/layouts/main-layout';
 
 export default function People(): JSX.Element {
   const { user } = useAuth();

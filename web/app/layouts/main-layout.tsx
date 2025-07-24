@@ -1,10 +1,10 @@
 import { SWRConfig } from 'swr';
-import { Toaster } from 'react-hot-toast';
-import { fetchJSON } from '@lib/fetch';
-import { WindowContextProvider } from '@lib/context/window-context';
-import { Sidebar } from '@components/sidebar/sidebar';
-import type { DefaultToastOptions } from 'react-hot-toast';
-import type { LayoutProps } from './common-layout';
+
+import { Outlet } from 'react-router';
+import { WindowContextProvider } from '~/lib/context/window-context';
+import { Sidebar } from '~/components/sidebar/sidebar';
+import { Toaster, type DefaultToastOptions } from 'react-hot-toast';
+import { fetchJSON } from '~/lib/fetch';
 
 const toastOptions: DefaultToastOptions = {
   style: {
@@ -15,12 +15,12 @@ const toastOptions: DefaultToastOptions = {
   success: { duration: 4000 }
 };
 
-export function MainLayout({ children }: LayoutProps): JSX.Element {
+export default function MainLayout() {
   return (
     <div className='flex w-full justify-center gap-0 lg:gap-4'>
       <WindowContextProvider>
         <Sidebar />
-        <SWRConfig value={{ fetcher: fetchJSON }}>{children}</SWRConfig>
+        <SWRConfig value={{ fetcher: fetchJSON }}><Outlet /></SWRConfig>
       </WindowContextProvider>
       <Toaster
         position='bottom-center'

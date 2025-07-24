@@ -1,6 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
 import { where, orderBy } from 'firebase/firestore';
-import type { JSX, ReactElement, ReactNode } from 'react';
 import { tweetsCollection } from '~/lib/firebase/collections';
 import { useInfiniteScroll } from '~/lib/hooks/useInfiniteScroll';
 import { useWindow } from '~/lib/context/window-context';
@@ -10,7 +9,9 @@ import { UpdateUsername } from '~/components/home/update-username';
 import { Loading } from '~/components/ui/loading';
 import { Input } from '~/components/input/input';
 import { Tweet } from '~/components/tweet/tweet';
-import { Error } from '~/components/ui/error';
+import { Error as AppError} from '~/components/ui/error';
+import type { Route } from './+types/home';
+import { isRouteErrorResponse } from 'react-router';
 
 export default function Home() {
   const { isMobile } = useWindow();
@@ -35,7 +36,7 @@ export default function Home() {
         {loading ? (
           <Loading className='mt-5' />
         ) : !data ? (
-          <Error message='Something went wrong' />
+          <AppError message='Something went wrong' />
         ) : (
           <>
             <AnimatePresence mode='popLayout'>
@@ -49,6 +50,32 @@ export default function Home() {
       </section>
     </MainContainer>
   );
+}
+
+export function ErrorBoundary({
+  error,
+}: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <>
+        <h1>
+          {error.status} {error.statusText}
+        </h1>
+        <p>{error.data}</p>
+      </>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }
 
 

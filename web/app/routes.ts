@@ -1,11 +1,16 @@
 import { type RouteConfig, index, layout, route } from "@react-router/dev/routes";
 
 export default [
-  index("routes/home.tsx"),
-  layout("components/layout/auth-layout.tsx",
+  layout('./layouts/protected-layout.tsx', [
+    layout('./layouts/main-layout.tsx', [
+      route('/home', "./routes/home.tsx"),
+      route("./tweet/:tweetId", "routes/tweet/id.tsx"),
+    ])
+  ]),
+  layout("./layouts/auth-layout.tsx",
     [
-      route("login", "routes/login.tsx"),
+      index("routes/login.tsx"),
     ],
   ),
-  route("tweet/:tweetId", "routes/tweet/id.tsx"),
+  
 ] satisfies RouteConfig;

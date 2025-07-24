@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import type { JSX } from 'react';
-import type { SEO } from '~/components/common/seo';
+import type { RefObject } from 'react';
 import { MainContainer } from '~/components/home/main-container';
 import { MainHeader } from '~/components/home/main-header';
 import { Tweet } from '~/components/tweet/tweet';
@@ -64,10 +63,10 @@ export default function TweetDetail({ params } : Route.ComponentProps) {
             {parentId && (
               <ViewParentTweet
                 parentId={parentId}
-                viewTweetRef={viewTweetRef}
+                viewTweetRef={viewTweetRef as RefObject<HTMLElement>}
               />
             )}
-            <ViewTweet viewTweetRef={viewTweetRef} {...tweetData} />
+            <ViewTweet viewTweetRef={viewTweetRef as RefObject<HTMLElement>} {...tweetData} />
             {tweetData &&
               (repliesLoading ? (
                 <Loading className='mt-5' />

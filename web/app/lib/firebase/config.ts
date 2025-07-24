@@ -1,10 +1,10 @@
 const config = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_APP_ID
+  apiKey: import.meta.env.VITE_PUBLIC_API_KEY,
+  authDomain: import.meta.env.VITE_PUBLIC_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PUBLIC_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_PUBLIC_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_PUBLIC_APP_ID
 } as const;
 
 type Config = typeof config;

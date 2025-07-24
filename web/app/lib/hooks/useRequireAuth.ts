@@ -8,7 +8,9 @@ export function useRequireAuth(redirectUrl?: string): User | null {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) void navigate(redirectUrl ?? '/', { replace: true });
+    console.log('Loading ' + loading);
+    console.log('User ' + user);
+    if (!loading && !user) navigate(redirectUrl ?? '/', { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
 
