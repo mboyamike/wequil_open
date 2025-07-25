@@ -6,7 +6,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { EmbedContentRequest, GoogleGenerativeAI } from 'https://esm.sh/@google/generative-ai'
+import { EmbedContentRequest, GoogleGenerativeAI, TaskType } from 'https://esm.sh/@google/generative-ai'
 
 console.log("Hello from Functions!")
 
@@ -67,10 +67,16 @@ Deno.serve(async (req) => {
     const embeddingsToInsert: { content: string; embedding: number[]; source_file: string }[] = [];
 
     for (const chunk of chunks) {
+      const embedContent: EmbedContentRequest = {
+        content: {
+          parts: [{ text: chunk }],
+          role: "user"
+        },
+        taskType: TaskType.SEMANTIC_SIMILARITY,
+      }
       const result = await embeddingModel.embedContent({
-        content: { parts: [{ text: chunk }] },
-        taskType: 'SEMANTIC_SIMILARITY', // Optimize for semantic similarity
-      } as EmbedContentRequest);
+        content: embedContent.content,
+      });
       const embedding = result.embedding.values;
 
       embeddingsToInsert.push({
