@@ -4,6 +4,7 @@ import { LoginMain } from "~/components/login/login-main";
 export default function Login() {
   return (
     <div className='grid min-h-screen grid-rows-[1fr,auto]'>
+      <div></div>
       <LoginMain />
       <LoginFooter />
     </div>

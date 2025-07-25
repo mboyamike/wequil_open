@@ -9,6 +9,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import "./globals.scss"
+
 import { WindowContextProvider } from "./lib/context/window-context";
 import { AuthContextProvider } from "./lib/context/auth-context";
 
