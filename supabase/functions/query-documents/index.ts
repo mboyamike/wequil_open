@@ -1,32 +1,76 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
-
-// Setup type definitions for built-in Supabase Runtime APIs
-import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-
-console.log("Hello from Functions!")
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { EmbedContentRequest, GoogleGenerativeAI, TaskType } from 'https://esm.sh/@google/generative-ai'
 
 Deno.serve(async (req) => {
-  const { name } = await req.json()
-  const data = {
-    message: `Hello ${name}!`,
+  if (req.method !== 'POST') {
+    return new Response('Method Not Allowed', { status: 405 });
   }
 
-  return new Response(
-    JSON.stringify(data),
-    { headers: { "Content-Type": "application/json" } },
-  )
-})
+  const { query } = await req.json();
 
-/* To invoke locally:
+  if (!query) {
+    return new Response(JSON.stringify({ error: 'Missing query' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
-  1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
-  2. Make an HTTP request:
+  const supabaseClient = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_ANON_KEY')! // Use anon key for client-side calls, ensure RLS is set up
+  );
 
-  curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/query-documents' \
-    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0' \
-    --header 'Content-Type: application/json' \
-    --data '{"name":"Functions"}'
+  const genAI = new GoogleGenerativeAI(Deno.env.get('GEMINI_API_KEY')!);
+  const embeddingModel = genAI.getGenerativeModel({ model: 'gemini-embedding-001' });
 
-*/
+  try {
+    const embedContent: EmbedContentRequest = {
+      content: {
+        parts: [{ text: query }],
+        role: "user"
+      },
+      taskType: TaskType.SEMANTIC_SIMILARITY,
+    }
+    // 1. Embed the user's query
+    const queryEmbeddingResult = await embeddingModel.embedContent(embedContent);
+    const queryEmbedding = queryEmbeddingResult.embedding.values;
+
+    // 2. Perform similarity search in Supabase
+    // Using `similarity` operator for pgvector's cosine distance (1 - (a <=> b))
+    const { data: documents, error: queryError } = await supabaseClient.rpc('match_documents', {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.78, // Adjust this threshold based on your data and desired relevance
+      match_count: 5,        // Number of top relevant documents to retrieve
+    });
+
+    if (queryError) {
+      console.error('Error querying documents:', queryError);
+      return new Response(JSON.stringify({ error: 'Failed to retrieve documents' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!documents || documents.length === 0) {
+      return new Response(JSON.stringify({ message: 'No relevant documents found.', context: '' }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Combine retrieved contexts
+    const context = documents.map((doc: any) => doc.content).join('\n\n');
+
+    return new Response(JSON.stringify({ context, documents: documents.map((doc: any) => ({ content: doc.content, similarity: doc.similarity, source_file: doc.source_file })) }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    console.error('Error in query processing:', error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+});

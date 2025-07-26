@@ -8,7 +8,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { EmbedContentRequest, GoogleGenerativeAI, TaskType } from 'https://esm.sh/@google/generative-ai'
 
-console.log("Hello from Functions!")
+console.log("Hello from Functions!");
 
 Deno.serve(async (req) => {
   const { name } = await req.json()
