@@ -1,0 +1,29 @@
+create extension if not exists vector;
+
+create or replace function match_documents (
+  query_embedding vector(3072),
+  match_threshold float,
+  match_count int
+)
+returns table (
+  id uuid,
+  content text,
+  source_file text,
+  similarity float
+)
+language plpgsql
+as $$
+#variable_conflict use_column
+begin
+  return query
+  select
+    id,
+    content,
+    source_file,
+    1 - (documents.embedding <=> query_embedding) as similarity
+  from documents
+  where 1 - (documents.embedding <=> query_embedding) > match_threshold
+  order by documents.embedding <=> query_embedding
+  limit match_count;
+end;
+$$;

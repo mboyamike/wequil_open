@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { EmbedContentRequest, GoogleGenerativeAI, TaskType } from 'https://esm.sh/@google/generative-ai'
+import OpenAI from "npm:openai";
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
@@ -20,20 +20,18 @@ Deno.serve(async (req) => {
     Deno.env.get('SUPABASE_ANON_KEY')! // Use anon key for client-side calls, ensure RLS is set up
   );
 
-  const genAI = new GoogleGenerativeAI(Deno.env.get('GEMINI_API_KEY')!);
-  const embeddingModel = genAI.getGenerativeModel({ model: 'gemini-embedding-001' });
+  const openai = new OpenAI({
+    apiKey: Deno.env.get('OPENAI_API_KEY'),
+  });
 
   try {
-    const embedContent: EmbedContentRequest = {
-      content: {
-        parts: [{ text: query }],
-        role: "user"
-      },
-      taskType: TaskType.SEMANTIC_SIMILARITY,
-    }
-    // 1. Embed the user's query
-    const queryEmbeddingResult = await embeddingModel.embedContent(embedContent);
-    const queryEmbedding = queryEmbeddingResult.embedding.values;
+    // 1. Embed the user's query using OpenAI
+    const response = await openai.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: query,
+    });
+    
+    const queryEmbedding = response.data[0].embedding;
 
     // 2. Perform similarity search in Supabase
     // Using `similarity` operator for pgvector's cosine distance (1 - (a <=> b))
